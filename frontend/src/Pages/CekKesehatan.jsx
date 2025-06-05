@@ -14,10 +14,11 @@ import {
   Alert,
   Spinner,
   Badge,
-  CardGroup
+  CardGroup,
+  ListGroup
 } from 'react-bootstrap';
 import KesehatanPresenter from '../Presenter/cekKesehatanPresenter';
-import Cookie from '../Model/accessCookie';
+import Kesehatan from '../Model/kesehatanModel';
 
 const CekKesehatan = () => {
   const { id } = useParams();
@@ -27,52 +28,58 @@ const CekKesehatan = () => {
   const [pertanyaan, setPertanyaan] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [jawaban, setJawaban] = useState("");
+  const [kategoriPertanyaan, setKategoriPertanyaan] = useState(null);
+  const [predicted, setPredicted] = useState(null);
 
   const [showPertanyaan, setShowPertanyaan] = useState(true);
 
-  const diabetes = [
-    {
-      name: "continuous_sneezing",
-      pertanyaan: "Apakah Anda mengalami bersin terus-menerus dalam sehari?"
-    },
-    {
-      name: "shivering",
-      pertanyaan: "Apakah Anda mengalami menggigil meskipun suhu di sekitar Anda tidak terlalu dingin?"
-    },
-    {
-      name: "chills",
-      pertanyaan: "Apakah Anda mengalami mata berair secara terus-menerus?"
-    }
-  ];
+  //kategoriPertanyaan = [
+  //   {
+  //     name: "continuous_sneezing",
+  //     pertanyaan: "Apakah Anda mengalami bersin terus-menerus dalam sehari?"
+  //   },
+  //   {
+  //     name: "shivering",
+  //     pertanyaan: "Apakah Anda mengalami menggigil meskipun suhu di sekitar Anda tidak terlalu dingin?"
+  //   },
+  //   {
+  //     name: "chills",
+  //     pertanyaan: "Apakah Anda mengalami mata berair secara terus-menerus?"
+  //   }
+  // ];
 
   const presenter = new KesehatanPresenter({
-    model: Cookie,
+    model: new Kesehatan(),
     view: {
       setLoading: setLoading,
       navigate: navigate,
+      setKategoriPertanyaan: setKategoriPertanyaan,
+      setPredicted: setPredicted
     }
   });
 
-  function hanldePertanyaan() {
-    if ((pertanyaan + 1) >= (diabetes.length)) {
-      setJawaban(jawaban + " " + diabetes[pertanyaan].name);
-      setShowPertanyaan(false);
-      return;
+  async function hanldePertanyaan() {
+    if ((pertanyaan + 1) >= (kategoriPertanyaan.length)) {
+      setJawaban(jawaban + " " + kategoriPertanyaan[pertanyaan].name_symptom);
+      await presenter.cekKesehatan(jawaban);
+      return setShowPertanyaan(false);
     }
     if (selectedAnswer) {
-      console.log("ini berjalan");
-      setJawaban(jawaban + " " + diabetes[pertanyaan].name);
+      setJawaban(jawaban + " " + kategoriPertanyaan[pertanyaan].name_symptom);
     }
+
+    setSelectedAnswer(null);
     setPertanyaan(pertanyaan + 1);
   }
 
   // Fetch info penyakit pada mount atau id berubah
   useEffect(() => {
+    presenter.getPertanyaan(id);
   }, []);
 
   // Mulai sesi cek kesehatan
   const startSession = async () => {
-    // await presenter.startCekkesehatan();
+    await presenter.startCekkesehatan();
   };
 
   // Restart sesi cek kesehatan
@@ -111,7 +118,6 @@ const CekKesehatan = () => {
     );
   }
 
-
 return (
   showPertanyaan ? (
         <>
@@ -134,7 +140,7 @@ return (
                   </Badge>
                 </div>
                 <ProgressBar
-                  now={((pertanyaan + 1) / diabetes.length) * 100}
+                  now={((pertanyaan + 1) / kategoriPertanyaan?.length) * 100}
                   variant="info"
                   style={{ height: '8px', borderRadius: '4px' }}
                   className="mb-0"
@@ -144,7 +150,7 @@ return (
               <Card.Body className="p-5">
                 <div className="mb-3">
                   <h4 className="fw-bold text-dark mb-4 lh-base">
-                    {diabetes[pertanyaan].pertanyaan}
+                    {kategoriPertanyaan ? kategoriPertanyaan[pertanyaan].question : ''}
                   </h4>
                 </div>
 
@@ -152,7 +158,7 @@ return (
                     <div className="d-grid gap-1">
                         <Card
                           // key={option.value}
-                          className={`border-2 border-primary bg-primary bg-opacity-10`}
+                          className={`border-2 ${selectedAnswer ? 'border-primary' : 'border-white'} bg-primary bg-opacity-10`}
                           style={{
                             cursor: 'pointer',
                             borderRadius: '12px',
@@ -161,35 +167,17 @@ return (
                           onClick={() => setSelectedAnswer(true)}
                         >
                           <Card.Body className="p-4">
-                            <Form.Check
-                              type="radio"
-                              id={``}
-                              name="answer"
-                              checked={selectedAnswer}
-                              onChange={() => setSelectedAnswer(true)}
-                              className="d-flex align-items-center"
-                              style={{ cursor: 'pointer' }}
-                            >
-                              <Form.Check.Input
-                                className="me-3"
-                                style={{
-                                  text: 'white',
-                                  transform: 'scale(1.2)',
-                                  accentColor: '#0d6efd'
-                                }}
-                              />
-                              <Form.Check.Label
+                              <Form.Label
                                 className="fw-medium text-dark mb-0 flex-grow-1"
                                 style={{ cursor: 'pointer', fontSize: '1.1rem' }}
                               >
                                 Ya
-                              </Form.Check.Label>
-                            </Form.Check>
+                              </Form.Label>
                           </Card.Body>
                         </Card>
                         <Card
                           // key={option.value}
-                          className={`border-2 border-primary bg-primary bg-opacity-10`}
+                          className={`border-2 ${selectedAnswer === false ? 'border-primary' : 'border-white'} bg-primary bg-opacity-10`}
                           style={{
                             cursor: 'pointer',
                             borderRadius: '12px',
@@ -198,31 +186,12 @@ return (
                           onClick={() => setSelectedAnswer(false)}
                         >
                           <Card.Body className="p-4">
-                            <Form.Check
-                              type="radio"
-                              id={``}
-                              name="answer"
-                              value="no"
-                              checked={!selectedAnswer}
-                              onChange={() => setSelectedAnswer(false)}
-                              className="d-flex align-items-center"
-                              style={{ cursor: 'pointer' }}
-                            >
-                              <Form.Check.Input
-                                className="me-3"
-                                style={{
-                                  text: 'white',
-                                  transform: 'scale(1.2)',
-                                  accentColor: '#0d6efd'
-                                }}
-                              />
-                              <Form.Check.Label
+                              <Form.Label
                                 className="fw-medium text-dark mb-0 flex-grow-1"
                                 style={{ cursor: 'pointer', fontSize: '1.1rem' }}
                               >
                                 Tidak
-                              </Form.Check.Label>
-                            </Form.Check>
+                              </Form.Label>
                           </Card.Body>
                         </Card>
                         <Button variant='primary' className='p-1 px-3' onClick={hanldePertanyaan}>Next</Button>
@@ -264,15 +233,34 @@ return (
                       className="px-4 py-2 fs-6 mb-3"
                       style={{ borderRadius: '20px' }}
                     >
-                      Risiko
+                      Risiko {predicted ? predicted : ""}
                     </Badge>
                   </div>
 
                   <Card className={`border mb-4`}>
                     <Card.Body>
-                      <h4 className={`text fw-bold mb-3`}>
-                        {jawaban}
-                      </h4>
+                      <ListGroup>
+                        <ListGroup.Item>
+                          name: Andy widianto
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          email: Andy widianto
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          prediksi: {predicted ? predicted : ""}
+                        </ListGroup.Item>
+                      </ListGroup>
+                      <div className='m-2'>
+                        <h4>Deskripsi</h4>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet molestias natus accusamus quam! Voluptatem corrupti at saepe dicta unde rerum totam quisquam? Ipsa, asperiores facere. Saepe veritatis reiciendis quam nobis?</p>
+                      </div>
+                      <div className='m-2'>
+                        <h4>Saran</h4>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex labore, quos assumenda tempore vero quis illo minus, doloribus doloremque, repellat facere. Quod nam quas aliquam odio repudiandae laudantium ipsa assumenda!</p>
+                      </div>
+                      {/* <h4 className={`text fw-bold mb-3`}>
+                        {predicted ? predicted : ""}
+                      </h4> */}
                       <p className="mb-0 text-muted">
                       </p>
                     </Card.Body>
