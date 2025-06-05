@@ -19,6 +19,7 @@ import routesCekKesehatan from './routes/cekKesehatan-route.js';
 import Kesehatan from './models/kesehatan-model.js';
 import likesRoute from './routes/likes-route.js';
 import { reactions } from './models/reactions-artikel.js';
+import Konsultasi from './models/konsultasi-model.js';
 
 const init = async () => {
 
@@ -62,6 +63,7 @@ const init = async () => {
         await db.sync();
         // await Kesehatan.sync()
         // await Artikel.sync({ alter: true });
+        await Konsultasi.sync()
     } catch (error) {
         
     }

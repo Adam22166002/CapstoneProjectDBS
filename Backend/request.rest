@@ -88,7 +88,6 @@ Content-Type: application/json
     "images":"https://example.com/image.jpg"
 }
 
-
 //API UNTUK MENGHAPUS DATA KATEGORI
 ###
 DELETE http://localhost:5000/api/kategori/8
@@ -134,7 +133,6 @@ Content-Type: application/json
 //API UNTUK MENGUPDATE DATA ARTIKEL
 PUT http://localhost:5000/api/artikel/1
 Content-Type: application/json
-
 
 
 
@@ -198,7 +196,7 @@ POST http://localhost:5000/reset-password/96535d5ac5246241ac63d59fd63c6918e3b668
 Content-Type: application/json
 
 {
-  "newPassword": "passwordBaru123"
+    "newPassword": "passwordBaru123"
 }
 
 
