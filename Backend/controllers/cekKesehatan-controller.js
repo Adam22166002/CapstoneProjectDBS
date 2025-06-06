@@ -1,6 +1,7 @@
 import { startSession, submitAnswer, getAllCategories, getCekKesehatanDetail } from "../services/cekKesehatan-service.js";
 import Kesehatan from "../models/kesehatan-model.js";
 import axios from 'axios';
+import FormData from 'form-data';
 
 export const handleStartSession = async (request, h) => {
     try {
@@ -93,12 +94,44 @@ export const createKesehatan = async (request, h) => {
 
 
 
-export const handleHealthCheck = async (request, h) => {
-  const { symptoms } = request.payload;
+// export const handleHealthCheck = async (request, h) => {
+//   const { symptoms } = request.payload;
+
+//   try {
+//     const response = await axios.post(' http://127.0.0.1:3000/predict', {
+//       symptoms
+//     });
+
+//     return h.response(response.data).code(200);
+//   } catch (error) {
+//     console.error('Error forwarding to ML model:', error.message);
+//     return h.response({
+//       error: 'Gagal menghubungi server machine learning',
+//       detail: error.message
+//     }).code(500);
+//   }
+// };
+
+/////////////////////////////////////// CONTROLLER MACHINE LERNING ///////////////////////////////////////////
+
+
+
+export const predictKulit = async (request, h) => {
+  const { file } = request.payload;
+
+  if (!file || !file.hapi || !file._data) {
+    return h.response({ error: 'No file uploaded' }).code(400);
+  }
 
   try {
-    const response = await axios.post(' http://127.0.0.1:3000/predict', {
-      symptoms
+    const formData = new FormData();
+    formData.append('file', file._data, {
+      filename: file.hapi.filename,
+      contentType: file.hapi.headers['content-type'],
+    });
+
+    const response = await axios.post('http://127.0.0.1:3000/predict-kulit', formData, {
+      headers: formData.getHeaders(),
     });
 
     return h.response(response.data).code(200);
@@ -106,8 +139,27 @@ export const handleHealthCheck = async (request, h) => {
     console.error('Error forwarding to ML model:', error.message);
     return h.response({
       error: 'Gagal menghubungi server machine learning',
-      detail: error.message
+      detail: error.message,
     }).code(500);
   }
 };
 
+export const predictKesehatan = async (request, h) => {
+  const { symptoms } = request.payload;
+
+  if (!symptoms) {
+    return h.response({ error: 'Symptoms data required' }).code(400);
+  }
+
+  try {
+    const response = await axios.post('http://127.0.0.1:3000/predict-kesehatan', { symptoms });
+
+    return h.response(response.data).code(200);
+  } catch (error) {
+    console.error('Error forwarding to ML model:', error.message);
+    return h.response({
+      error: 'Gagal menghubungi server machine learning',
+      detail: error.message,
+    }).code(500);
+  }
+};

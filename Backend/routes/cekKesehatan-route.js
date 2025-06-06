@@ -1,4 +1,4 @@
-import { handleGetCategories, handleStartSession, handleSubmitAnswer, handleGetDetail, createKesehatan, handleHealthCheck } from "../controllers/cekKesehatan-controller.js";
+import { handleGetCategories, handleStartSession, handleSubmitAnswer, handleGetDetail, createKesehatan, predictKulit, predictKesehatan } from "../controllers/cekKesehatan-controller.js";
 
 const routesCekKesehatan = [
     {
@@ -31,11 +31,31 @@ const routesCekKesehatan = [
     handler: createKesehatan
   },
 
-  {
-    method: 'POST',
-    path: '/cek-kesehatan',
-    handler: handleHealthCheck
-  }
+//   {
+//     method: 'POST',
+//     path: '/cek-kesehatan',
+//     handler: handleHealthCheck
+//   }
+
+        {
+            method: 'POST',
+            path: '/predict-kulit',
+            options: {
+            payload: {
+                allow: 'multipart/form-data',
+                multipart: true,
+                output: 'stream',
+                parse: true,
+            },
+            },
+            handler: predictKulit,
+        },
+        
+        {
+            method: 'POST',
+            path: '/predict-kesehatan',
+            handler: predictKesehatan,
+        },
 
 ];
 
