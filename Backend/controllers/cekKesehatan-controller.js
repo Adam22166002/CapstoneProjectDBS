@@ -134,7 +134,13 @@ export const predictKulit = async (request, h) => {
       headers: formData.getHeaders(),
     });
 
-    return h.response(response.data).code(200);
+    const kelas = response.data.class;
+    const akurasi = response.data.confidence;
+
+    return h.response({
+      deskripsi:`Ciri-ciri yang ditemukan mengarah pada kemungkinan Anda mengidap penyakit ${kelas}`,
+      saran:`Diperlukan pemeriksaan lebih lanjut untuk memastikan diagnosis penyakit ${kelas}, Pergi ke rumah sakit atau puskesmas terdekat untuk di tindak lanjuti`
+    }).code(200);
   } catch (error) {
     console.error('Error forwarding to ML model:', error.message);
     return h.response({
@@ -154,7 +160,12 @@ export const predictKesehatan = async (request, h) => {
   try {
     const response = await axios.post('http://127.0.0.1:3000/predict-kesehatan', { symptoms });
 
-    return h.response(response.data).code(200);
+    const prediksi = response.data.predicted;
+
+    return h.response({
+      deskripsi:`Anda terdeteksi mengalami gejala dan resiko yang mengarah pada penyakit ${prediksi}.`,
+      saran:`Sebaiknya segera lakukan pemeriksaan medis di fasilitas kesehatan terdekat untuk mendapatkan diagnosis yang tepat mengenai penyakit ${prediksi}.`
+    }).code(200);
   } catch (error) {
     console.error('Error forwarding to ML model:', error.message);
     return h.response({

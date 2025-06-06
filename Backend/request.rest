@@ -217,5 +217,15 @@ POST http://localhost:5000/cek-kesehatan
 Content-Type: application/json
 
 {
-  "symptoms": ["shivering", "chills"]
+    "symptoms": ["shivering", "chills"]
+}
+
+
+
+###
+POST http://localhost:5000/predict-kesehatan
+Content-Type: application/json
+
+{
+    "symptoms": "fatigue weight_lost restlessness lethargy"
 }
