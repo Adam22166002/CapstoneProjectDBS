@@ -1,3 +1,4 @@
+import Cookie from './accessCookie';
 import { instance } from './index';
 
 class Users {
@@ -15,11 +16,11 @@ class Users {
         const res = await instance.post('/user', data);
         return res.data;
     }
-    static async getUser(token) {
-        const res = await instance.get('/user', {
+    static async getUser() {
+        const cookie = await Cookie.getCookie();
+        const res = await instance.get('/api/user', {
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${cookie.accessToken}`
             }
         })
 

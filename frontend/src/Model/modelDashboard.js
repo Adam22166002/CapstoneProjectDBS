@@ -1,4 +1,5 @@
 import { instance } from ".";
+import Cookie from "./accessCookie";
 
 export default class Dashboard {
 
@@ -53,6 +54,17 @@ export default class Dashboard {
                 "Content-Type": "multipart/form-data"
             }
         });
+        return res.data;
+    }
+
+    static async getUser() {
+        const cookie = await Cookie.getCookie();
+        const res = await instance.get('/api/user', {
+            headers: {
+                Authorization: `Bearer ${cookie.accessToken}`
+            }
+        });
+
         return res.data;
     }
 }

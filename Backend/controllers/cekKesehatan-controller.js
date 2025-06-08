@@ -138,8 +138,9 @@ export const predictKulit = async (request, h) => {
     const akurasi = response.data.confidence;
 
     return h.response({
-      deskripsi:`Ciri-ciri yang ditemukan mengarah pada kemungkinan Anda mengidap penyakit ${kelas}`,
-      saran:`Diperlukan pemeriksaan lebih lanjut untuk memastikan diagnosis penyakit ${kelas}, Pergi ke rumah sakit atau puskesmas terdekat untuk di tindak lanjuti`
+      deskripsi:`Ciri-ciri yang ditemukan mengarah pada kemungkinan Anda mengidap penyakit <strong>${kelas}</strong>`,
+      saran:`Diperlukan pemeriksaan lebih lanjut untuk memastikan diagnosis penyakit <strong>${kelas}</strong>, Pergi ke rumah sakit atau puskesmas terdekat untuk di tindak lanjuti`,
+      kepercayaan_diri: akurasi
     }).code(200);
   } catch (error) {
     console.error('Error forwarding to ML model:', error.message);

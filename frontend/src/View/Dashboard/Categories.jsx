@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Container, Row, Col, Card, Table, Button, Modal, Form, Image } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import CategoriPresenter from '../../Presenter/CategoriePresenter';
@@ -15,6 +15,10 @@ const Categories = () => {
   const [kategori, setKategori] = useState(null);
   const [deskripsi, setDeskripsi] = useState(null);
   const [imageKategori, setImageKategori] = useState(null);
+  const [showImage, setShowImage] = useState(null);
+
+
+  const imageRef = useRef();
 
 
 
@@ -46,6 +50,13 @@ const Categories = () => {
 
   async function handleDelete(id) {
     await presenter.deleteKategori(id);
+  }
+
+  async function handleSelect(e) {
+    const image = e.target.files[0];
+    if (!image) return;
+    setShowImage(URL.createObjectURL(image));
+    setImageKategori(image);
   }
   
 
@@ -120,12 +131,18 @@ const Categories = () => {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <Form.Label>Nama Kategori</Form.Label>
+              <Form.Label>Image Kategori</Form.Label>
               <Form.Control
                 type="file"
                 placeholder="Masukkan nama kategori"
-                onChange={(e) => setImageKategori(e.target.files[0])}
+                onChange={handleSelect}
+                ref={imageRef}
+                hidden
               />
+              <Button variant="none" type="button" onClick={() => imageRef.current.click()} className="d-flex align-items-end">
+                <Image src={editId ? kategoris?.find(value => value.id == editId).images : showImage || '/image/profile-default.jpg'} width={80} height={80} className="rounded-circle object-fit-content outline-0" />
+                <FaEdit className="position-relative end-50 text-light" />
+              </Button>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Nama Kategori</Form.Label>

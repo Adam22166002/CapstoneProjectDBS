@@ -32,15 +32,30 @@ import {
   Modal,
   InputGroup
 } from 'react-bootstrap';
+import KonsultasiPresenter from '../Presenter/konsultasiPresenter';
+import KonsultasiModel from '../Model/konsultasiModel';
 
 const KonsultasiKesehatan = () => {
   const [showConsultationModal, setShowConsultationModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [image, setImage] = useState(null);
+  // const [imagePreview, setImagePreview] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+
+  const presenter = new KonsultasiPresenter({
+    model: new KonsultasiModel(),
+    view: {
+      setSelectedImage: setSelectedImage,
+      setIsLoading: setIsLoading,
+      setChatHistory: setChatHistory,
+      setIsUploading: setIsUploading,
+      setImage: setImage
+    }
+  })
 
   // Handle file selection
   const handleImageSelect = (event) => {
@@ -57,86 +72,28 @@ const KonsultasiKesehatan = () => {
         alert('Ukuran file terlalu besar. Maksimal 5MB');
         return;
       }
-
-      setSelectedImage(file);
+      setImage(file);
+      const url = URL.createObjectURL(file);
+      setSelectedImage(url);
+      // setSelectedImage(file);
       
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target.result);
-      };
-      reader.readAsDataURL(file);
+      // // Create preview
+      // const reader = new FileReader();
+      // reader.onload = (e) => {
+      //   setImagePreview(e.target.result);
+      // };
+      // reader.readAsDataURL(file);
     }
   };
 
   // Handle consultation submission
-  const handleSubmitConsultation = async () => {
-    if (!selectedImage) return;
-
-    setIsLoading(true);
-    setIsUploading(true);
-
-    try {
-      // Add user message to chat
-      const userMessage = {
-        id: Date.now(),
-        type: 'user',
-        content: 'image',
-        image: imagePreview,
-        timestamp: new Date().toLocaleTimeString()
-      };
-      
-      setChatHistory(prev => [...prev, userMessage]);
-
-      // Prepare FormData for API
-      const formData = new FormData();
-      formData.append('image', selectedImage);
-
-      // TODO: Replace with your actual API endpoint
-      const response = await fetch('/api/konsultasi/predict', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      // Add AI response to chat
-      const aiMessage = {
-        id: Date.now() + 1,
-        type: 'ai',
-        content: result.prediction || 'Hasil prediksi akan muncul di sini',
-        confidence: result.confidence || 0.95,
-        recommendations: result.recommendations || ['Konsultasi dengan dokter spesialis', 'Jaga pola hidup sehat'],
-        timestamp: new Date().toLocaleTimeString()
-      };
-
-      setChatHistory(prev => [...prev, aiMessage]);
-
-      // Reset form
-      setSelectedImage(null);
-      setImagePreview(null);
-      
-    } catch (error) {
-      console.error('Error:', error);
-      // Add error message to chat
-      const errorMessage = {
-        id: Date.now() + 1,
-        type: 'ai',
-        content: 'Maaf, terjadi kesalahan saat memproses foto. Silakan coba lagi.',
-        error: true,
-        timestamp: new Date().toLocaleTimeString()
-      };
-      setChatHistory(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-      setIsUploading(false);
-    }
-  };
+  async function handleSubmitConsultation() {
+    await presenter.submitKonsultasi(selectedImage, image);
+  }
 
   // Clear selected image
   const clearSelectedImage = () => {
     setSelectedImage(null);
-    setImagePreview(null);
   };
 
   return (
@@ -288,7 +245,7 @@ const KonsultasiKesehatan = () => {
                             </div>
                           ) : (
                             <div>
-                              <p className="mb-2">{message.content}</p>
+                              <p className="mb-2" dangerouslySetInnerHTML={{__html: message.content}}></p>
                               
                               {message.confidence && (
                                 <div className="mb-2">
@@ -336,7 +293,7 @@ const KonsultasiKesehatan = () => {
           </div>
 
           <div className="border-top pt-3 mt-3">
-            {imagePreview ? (
+            {selectedImage ? (
               <div className="selected-image-preview p-3 bg-light rounded-3 mb-3">
                 <div className="d-flex justify-content-between align-items-start mb-2">
                   <small className="text-muted fw-semibold">Foto yang dipilih:</small>
@@ -349,7 +306,7 @@ const KonsultasiKesehatan = () => {
                   </Button>
                 </div>
                 <img 
-                  src={imagePreview} 
+                  src={selectedImage} 
                   alt="Preview" 
                   className="img-fluid rounded"
                   style={{maxHeight: '150px'}}

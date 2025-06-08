@@ -22,7 +22,7 @@ import NavbarComponentPresenter from "../Presenter/NavbarComponentPresenter";
 import Dashboard from "../Model/modelDashboard";
 
 const NavbarComponent = () => {
-  const [kategoriKesehatan, setKategoriKesehatan] = useState([]);
+  const [user, setUser] = useState(null);
   const [categoires, setCategories] = useState(null);
   const navigate = useNavigate();
 
@@ -30,24 +30,18 @@ const NavbarComponent = () => {
   const presenter = new NavbarComponentPresenter({
     model: Dashboard,
     view: {
-      setCategories: setCategories
+      setCategories: setCategories,
+      setUser: setUser,
+      navigate: navigate
     }
   })
 
   useEffect(() => {
-    const fetchKategori = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/kategori");
-        setKategoriKesehatan(res.data.data);
-      } catch (error) {
-        console.error("Gagal mengambil kategori:", error);
-      }
-    };
     presenter.getKategori();
-    fetchKategori();
   }, []);
 
-  const handleSelect = (id) => {
+  const handleSelect = async (id) => {
+    await presenter.getUser();
     navigate(`/cek-kesehatan/${id}`);
   };
 
@@ -71,8 +65,8 @@ const NavbarComponent = () => {
                 Kategori Kesehatan
               </>
             } id="nav-dropdown">
-              {kategoriKesehatan.length > 0 ? (
-                kategoriKesehatan.map((kategori) => (
+              {categoires ? (
+                categoires.map((kategori) => (
                   <NavDropdown.Item
                     key={kategori.id}
                     href={`/kategori/${kategori.id}`}
@@ -106,7 +100,7 @@ const NavbarComponent = () => {
               id="cek-kesehatan-dropdown"
             >
               {categoires?.map(value => (
-                <NavDropdown.Item onClick={() => handleSelect(value.id)}>
+                <NavDropdown.Item onClick={() => handleSelect(value.id)} key={value.id}>
                   {value.nama_kategori}
                 </NavDropdown.Item>
               )).slice(0, 3)}

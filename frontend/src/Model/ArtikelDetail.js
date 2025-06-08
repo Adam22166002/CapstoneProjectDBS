@@ -1,13 +1,11 @@
 import axios from 'axios';
+import { instance } from '.';
 
 export class ArticleModel {
-  constructor() {
-    this.baseURL = 'http://localhost:5000/api';
-  }
 
   async getArticleById(id) {
     try {
-      const response = await axios.get(`${this.baseURL}/artikel/${id}`);
+      const response = await instance.get(`/api/artikel/${id}`);
       return {
         success: true,
         data: response.data.data || response.data
@@ -22,7 +20,7 @@ export class ArticleModel {
 
   async getAllArticles() {
     try {
-      const response = await axios.get(`${this.baseURL}/artikel`);
+      const response = await instance.get(`/api/artikel`);
       return {
         success: true,
         data: response.data.data || response.data
@@ -37,7 +35,7 @@ export class ArticleModel {
 
   async getCategories() {
     try {
-      const response = await axios.get(`${this.baseURL}/kategori`);
+      const response = await instance.get(`/api/kategori`);
       return {
         success: true,
         data: response.data.data || response.data
@@ -52,7 +50,7 @@ export class ArticleModel {
 
   async subscribeNewsletter(email) {
     try {
-      const response = await axios.post(`${this.baseURL}/newsletter`, { email });
+      const response = await instance.post(`/api/newsletter`, { email });
       return {
         success: true,
         data: response.data
@@ -101,7 +99,7 @@ export class ArticleModel {
   }
 
   async getlike(user_id, artikel_id) {
-    const res = await axios.post(`${this.baseURL}/like`, {
+    const res = await instance.post(`/api/like`, {
       user_id: user_id,
       artikel_id: artikel_id
     });
@@ -110,7 +108,7 @@ export class ArticleModel {
   }
 
   async createLike(user_id, artikel_id, status) {
-    const res = await axios.post(`${this.baseURL}/likes`, {
+    const res = await instance.post(`/api/likes`, {
       user_id: user_id,
       artikel_id: artikel_id,
       status: status
@@ -121,15 +119,20 @@ export class ArticleModel {
 
 
   async getUser() {
-    const cookie = await axios.get(`http://localhost:5000/token`, {
+    const cookie = await instance.get(`/token`, {
       withCredentials: true
     });
-    const res = await axios.get(`${this.baseURL}/user`, {
+    const res = await instance.get(`/api/user`, {
       headers: {
         Authorization: `Bearer ${cookie.data.accessToken}`
       }
     });
 
+    return res.data;
+  }
+
+  async getLikes(id) {
+    const res = await instance.get(`/api/likes/${id}`);
     return res.data;
   }
 }

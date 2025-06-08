@@ -48,7 +48,7 @@ export default class CategoriPresenter {
             data.append("images", image);
             const res = await this.#model.editKategori(id, data);
             console.log(res);
-            this.getKategori();
+            await this.getKategori();
         } catch (err) {
             console.error(err);
         } finally {
@@ -81,7 +81,9 @@ export default class CategoriPresenter {
         if (id !== null) {
             const searchKategoriById = kategoris.find(value => value.id === id);
             image = image ? image : searchKategoriById.images;
-            await this.editKategori(id, searchKategoriById.nama_kategori, searchKategoriById.deskripsi, image);
+            kategori = kategori ? kategori : searchKategoriById.nama_kategori;
+            deskripsi = deskripsi ? deskripsi : searchKategoriById.deskripsi;
+            await this.editKategori(id, kategori, searchKategoriById.deskripsi, image);
             this.#view.setShowModal(false);
             return;
         }

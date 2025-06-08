@@ -10,4 +10,13 @@ export default class ProfilePresenter {
         this.#view = view;
     }
 
+    async getUser() {
+        try {
+            const res = await this.#model.getUser();
+            this.#view.setUser(res.user);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
 }

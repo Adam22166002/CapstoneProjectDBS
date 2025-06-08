@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { Dropdown, NavDropdown, Navbar, Container, Row, Col, Card, Button, Form, Badge, Nav, InputGroup } from 'react-bootstrap';
 import { FaSearch, FaPhoneAlt, FaComments, FaStethoscope, FaHeartbeat, FaCalendarAlt, FaUser, FaShare, FaBookmark, FaPrint, FaThumbsUp, FaThumbsDown, FaEye, FaClock, FaTag, FaArrowLeft, FaHome, FaChevronRight } from 'react-icons/fa';
 import { ArticlePresenter } from '../Presenter/DetailArtikelPresenter';
@@ -10,6 +10,7 @@ import SubscriptionForm from '../Component/SubscriptionForm';
 const ArticleDetailPage = () => {
 
   const [user, setUser] = useState(null);
+  const [likes, setLikes] = useState(null);
   const [loading, setLoading] = useState(true);
   const [artikel, setArtikel] = useState(null);
   const [allArticles, setAllArticles] = useState([]);
@@ -42,6 +43,7 @@ const ArticleDetailPage = () => {
       showNewsletterError: (message) => alert(message),
       clearNewsletterEmail: () => setEmail(''),
       setUser: setUser,
+      setLikes: setLikes
     }
   });
 
@@ -50,6 +52,7 @@ const ArticleDetailPage = () => {
   useEffect(() => {
     presenter.getUser(id);
     presenter.loadArticleData(id);
+    presenter.getLikes(id);
   }, []);
 
   const handleLike = async (status) => {
@@ -124,7 +127,7 @@ const ArticleDetailPage = () => {
                     className="img-fluid rounded"
                     style={{ width: '100%', height: '400px', objectFit: 'cover' }}
                   />
-                  <p className="text-muted mw-100 word-break overflow-wrap-break-word" style={{ maxWidth: 800 + 'px' }}>
+                  <p className="text-black mw-100 word-break overflow-wrap-break-word" style={{ maxWidth: 800 + 'px' }}>
                     <div dangerouslySetInnerHTML={{ __html: artikel.isi }}></div>
                   </p>
                 </div>
@@ -141,11 +144,15 @@ const ArticleDetailPage = () => {
                   </div>
                   <div className="me-4 mb-2">
                     <FaClock className="me-1" />
-                    {artikel.read_time || '5 menit'}
+                    {presenter.createAt(artikel.createdAt)}
                   </div>
                   <div className="me-4 mb-2">
-                    <FaEye className="me-1" />
-                    {artikel.views} views
+                    <FaThumbsUp className="mx-1" />
+                    {likes?.filter(value => value.status === 'like').length} likes
+                  </div>
+                  <div className="me-4 mb-2">
+                    <FaThumbsDown className="mx-1" />
+                    {likes?.filter(value => value.status === 'dislike').length} dislikes
                   </div>
                 </div>
 
@@ -242,13 +249,13 @@ const ArticleDetailPage = () => {
                   </div>
                   <div className="list-group list-group-flush title-text">
                     {kategoriKesehatan.map((category, index) => (
-                      <a key={index} href="#" className="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
+                      <Link to={`/kategori/${category.id}`} key={index} className="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
                         <div>
                           <FaHeartbeat className="me-2 primary" />
                           {category.nama_kategori}
                         </div>
                         <span className="badge bg-light text-dark">{category.count || 0}</span>
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -294,7 +301,8 @@ const ArticleDetailPage = () => {
                           </div>
                           <div>
                             <h6 className="mb-1">{item.judul}</h6>
-                            <p className="text-muted small" dangerouslySetInnerHTML={{ __html: item.isi?.slice(0, 90) + '...' }}>
+                            <p className="text-muted small">
+                              <div dangerouslySetInnerHTML={{ __html: item.isi?.slice(0, 90) + '...' }}></div>
                             </p>
                           </div>
                         </div>
@@ -330,7 +338,7 @@ const ArticleDetailPage = () => {
                           {presenter.getCategoryName(kategoriKesehatan, item.kategori_id)}
                         </span>
                         <h3 className="card-title">{item.judul}</h3>
-                        <p className="text-muted" dangerouslySetInnerHTML={{ __html: (item.isi?.slice(0, 300) + '...') }}></p>
+                        <p className="text-muted word-break overflow-wrap-break-word" dangerouslySetInnerHTML={{ __html: (item.isi?.slice(0, 300) + '...') }}></p>
                         <div className='col-12 col-md-6 d-flex gap-x-px justify-content-start align-items-start small'>
                           <p className="text-muted">{item.author}</p>
                           <p className="card-text text-muted">

@@ -10,8 +10,17 @@ export default class MainLayoutPresenter {
 
     async Logout() {
         try {
-            const res = await this.#model.Logout();
+            const res = await this.#model.Users.Logout();
             console.log(res);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async getUser() {
+        try {
+            const res = await this.#model.Users.getUser();
+            this.#view.setUser(res.user);
         } catch (err) {
             console.error(err);
         }

@@ -3,19 +3,24 @@ import { Card, Container, Row, Col, Button, Form, Alert, Nav } from 'react-boots
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaLock, FaEdit, FaSave, FaImage } from 'react-icons/fa';
 import ProfilePresenter from '../../Presenter/ProfilePresenter';
 import Users from '../../Model/users';
+import { useLocation } from 'react-router';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profileInfo');
   const [isEditing, setIsEditing] = useState(false);
   const [successAlert, setSuccessAlert] = useState(false);
-  const [data, setData] = useState(null);
+  const [user, setUser] = useState(null);
 
 
   const presenter = new ProfilePresenter({
     model: Users,
     view: {
-      setData: setData
+      setUser: setUser
     }
+  });
+
+  useEffect(() => {
+    presenter.getUser();
   })
   
   // Data statis untuk profil pengguna
@@ -139,7 +144,7 @@ const Profile = () => {
                   <FaImage />
                 </Button>
               </div>
-              <h4 className="mb-1">{profileData.name}</h4>
+              <h4 className="mb-1">{user?.name}</h4>
               <p className="text-muted mb-3">{profileData.role}</p>
               <div className="d-grid gap-2">
                 <Button variant="outline-primary" onClick={handleEditToggle}>
@@ -202,7 +207,8 @@ const Profile = () => {
                         <Form.Control
                           type="text"
                           name="name"
-                          value={isEditing ? formData.name : profileData.name}
+                          // value={isEditing ? formData.name : profileData.name}
+                          value={user?.name}
                           onChange={handleInputChange}
                           disabled={!isEditing}
                         />
@@ -217,7 +223,8 @@ const Profile = () => {
                         <Form.Control
                           type="email"
                           name="email"
-                          value={isEditing ? formData.email : profileData.email}
+                          // value={isEditing ? formData.email : profileData.email}
+                          value={user?.email}
                           onChange={handleInputChange}
                           disabled={!isEditing}
                         />

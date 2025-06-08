@@ -25,16 +25,31 @@ export default class KesehatanPresenter {
         }
     }
 
-    async cekKesehatan(value) {
+    async getUser() {
         this.#view.setLoading(true);
         try {
-            const res = await this.#model.cekKesehatan(value);
+            const res = await this.#model.getUser();
             console.log(res);
-            this.#view.setPredicted(res.predicted);
+            this.#view.setUser(res.user);
+        } catch (err) {
+            if (err.status === 401) {
+                this.#view.navigate("/login");
+            }
+        } finally {
+            this.#view.setLoading(false);
+        }
+    }
+
+    async PredictKesehatan(value) {
+        this.#view.setLoadingPredict(true);
+        try {
+            const res = await this.#model.PredictKesehatan(value);
+            console.log(res);
+            this.#view.setPredicted(res);
         } catch (err) {
             console.error(err);
         } finally {
-            this.#view.setLoading(false);
+            this.#view.setLoadingPredict(false);
         }
     }
 

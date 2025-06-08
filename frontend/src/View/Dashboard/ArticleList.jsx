@@ -126,7 +126,7 @@ const ArticleList = () => {
                         </Badge>
                       </td>
                       <td>
-                        <Button variant="info" size="sm" className="me-1">
+                        <Button variant="info" size="sm" className="me-1" onClick={() => navigate(`/artikel/${article.id}`)}>
                           <FaEye />
                         </Button>
                         <Button variant="warning" size="sm" className="me-1" onClick={() => handleEdit(article.id)}>

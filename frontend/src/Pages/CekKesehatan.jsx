@@ -24,29 +24,18 @@ const CekKesehatan = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // loading
   const [loading, setLoading] = useState(false);
+  const [LoadingPredict, setLoadingPredict] = useState(false);
+
   const [pertanyaan, setPertanyaan] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [jawaban, setJawaban] = useState("");
   const [kategoriPertanyaan, setKategoriPertanyaan] = useState(null);
   const [predicted, setPredicted] = useState(null);
+  const [user, setUser] = useState(null);
 
   const [showPertanyaan, setShowPertanyaan] = useState(true);
 
-  //kategoriPertanyaan = [
-  //   {
-  //     name: "continuous_sneezing",
-  //     pertanyaan: "Apakah Anda mengalami bersin terus-menerus dalam sehari?"
-  //   },
-  //   {
-  //     name: "shivering",
-  //     pertanyaan: "Apakah Anda mengalami menggigil meskipun suhu di sekitar Anda tidak terlalu dingin?"
-  //   },
-  //   {
-  //     name: "chills",
-  //     pertanyaan: "Apakah Anda mengalami mata berair secara terus-menerus?"
-  //   }
-  // ];
 
   const presenter = new KesehatanPresenter({
     model: new Kesehatan(),
@@ -54,28 +43,24 @@ const CekKesehatan = () => {
       setLoading: setLoading,
       navigate: navigate,
       setKategoriPertanyaan: setKategoriPertanyaan,
-      setPredicted: setPredicted
+      setPredicted: setPredicted,
+      setUser: setUser,
+      setLoadingPredict: setLoadingPredict
     }
   });
 
-  async function hanldePertanyaan() {
+  async function hanldePertanyaan(value) {
     if ((pertanyaan + 1) >= (kategoriPertanyaan.length)) {
       setJawaban(jawaban + " " + kategoriPertanyaan[pertanyaan].name_symptom);
-      await presenter.cekKesehatan(jawaban);
-      return setShowPertanyaan(false);
+      await presenter.PredictKesehatan(jawaban);
+      setShowPertanyaan(false);
+      return;
     }
-    if (selectedAnswer) {
+    if (value) {
       setJawaban(jawaban + " " + kategoriPertanyaan[pertanyaan].name_symptom);
     }
-
-    setSelectedAnswer(null);
     setPertanyaan(pertanyaan + 1);
   }
-
-  // Fetch info penyakit pada mount atau id berubah
-  useEffect(() => {
-    presenter.getPertanyaan(id);
-  }, []);
 
   // Mulai sesi cek kesehatan
   const startSession = async () => {
@@ -87,25 +72,11 @@ const CekKesehatan = () => {
     startSession();
   };
 
-  // Helper function untuk mendapatkan variant warna berdasarkan level risiko
-  const getRiskVariant = (level) => {
-    switch (level?.toLowerCase()) {
-      case 'tinggi': return 'danger';
-      case 'sedang': return 'warning';
-      case 'rendah': return 'success';
-      default: return 'info';
-    }
-  };
+  useEffect(() => {
+    presenter.getPertanyaan(id);
+    presenter.getUser();
+  }, []);
 
-  // Helper function untuk mendapatkan icon berdasarkan level risiko
-  const getRiskIcon = (level) => {
-    switch (level?.toLowerCase()) {
-      case 'tinggi': return <FaExclamationTriangle className="me-2" />;
-      case 'sedang': return <FaClipboardCheck className="me-2" />;
-      case 'rendah': return <FaCheckCircle className="me-2" />;
-      default: return <FaHeartbeat className="me-2" />;
-    }
-  };
 
   if (loading) {
     return (
@@ -113,6 +84,16 @@ const CekKesehatan = () => {
         <div className="text-center">
           <Spinner animation="border" variant="primary" className="mb-3" />
           <h5 className="text-muted">Memuat data kesehatan...</h5>
+        </div>
+      </Container>
+    );
+  }
+  if (LoadingPredict) {
+    return (
+      <Container fluid className="min-vh-100 d-flex justify-content-center align-items-center bg-light">
+        <div className="text-center">
+          <Spinner animation="border" variant="primary" className="mb-3" />
+          <h5 className="text-muted">Melakukan prediksi...</h5>
         </div>
       </Container>
     );
@@ -157,14 +138,13 @@ return (
                 <Form className="mb-4 shadow-none">
                     <div className="d-grid gap-1">
                         <Card
-                          // key={option.value}
-                          className={`border-2 ${selectedAnswer ? 'border-primary' : 'border-white'} bg-primary bg-opacity-10`}
+                          className={`border-2 active-border-primary bg-primary bg-opacity-10`}
                           style={{
                             cursor: 'pointer',
                             borderRadius: '12px',
                             transition: 'all 0.2s ease'
                           }}
-                          onClick={() => setSelectedAnswer(true)}
+                          onClick={() => hanldePertanyaan(true)}
                         >
                           <Card.Body className="p-4">
                               <Form.Label
@@ -176,14 +156,13 @@ return (
                           </Card.Body>
                         </Card>
                         <Card
-                          // key={option.value}
-                          className={`border-2 ${selectedAnswer === false ? 'border-primary' : 'border-white'} bg-primary bg-opacity-10`}
+                          className={`border-2 active-border-primary bg-primary bg-opacity-10`}
                           style={{
                             cursor: 'pointer',
                             borderRadius: '12px',
                             transition: 'all 0.2s ease'
                           }}
-                          onClick={() => setSelectedAnswer(false)}
+                          onClick={() => hanldePertanyaan(false)}
                         >
                           <Card.Body className="p-4">
                               <Form.Label
@@ -194,7 +173,6 @@ return (
                               </Form.Label>
                           </Card.Body>
                         </Card>
-                        <Button variant='primary' className='p-1 px-3' onClick={hanldePertanyaan}>Next</Button>
                       </div>
                     </Form>
               </Card.Body>
@@ -233,7 +211,7 @@ return (
                       className="px-4 py-2 fs-6 mb-3"
                       style={{ borderRadius: '20px' }}
                     >
-                      Risiko {predicted ? predicted : ""}
+                      Risiko
                     </Badge>
                   </div>
 
@@ -241,22 +219,22 @@ return (
                     <Card.Body>
                       <ListGroup>
                         <ListGroup.Item>
-                          name: Andy widianto
+                          name: {user.name}
                         </ListGroup.Item>
                         <ListGroup.Item>
-                          email: Andy widianto
+                          email: {user.email}
                         </ListGroup.Item>
                         <ListGroup.Item>
-                          prediksi: {predicted ? predicted : ""}
+                          prediksi: 
                         </ListGroup.Item>
                       </ListGroup>
                       <div className='m-2'>
                         <h4>Deskripsi</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet molestias natus accusamus quam! Voluptatem corrupti at saepe dicta unde rerum totam quisquam? Ipsa, asperiores facere. Saepe veritatis reiciendis quam nobis?</p>
+                        <p>{predicted?.deskripsi}</p>
                       </div>
                       <div className='m-2'>
                         <h4>Saran</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex labore, quos assumenda tempore vero quis illo minus, doloribus doloremque, repellat facere. Quod nam quas aliquam odio repudiandae laudantium ipsa assumenda!</p>
+                        <p>{predicted?.saran}</p>
                       </div>
                       {/* <h4 className={`text fw-bold mb-3`}>
                         {predicted ? predicted : ""}

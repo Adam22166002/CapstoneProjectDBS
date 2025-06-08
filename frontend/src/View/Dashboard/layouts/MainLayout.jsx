@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router';
 import { Container, Row, Col, Nav, Navbar, Button, Dropdown, Badge } from 'react-bootstrap';
 import { 
@@ -12,13 +12,22 @@ import Model from '../../../Model/Model';
 const MainLayout = ({ children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [user, setUser] = useState(null);
+
   const location = useLocation();
   const navigate = useNavigate();
 
 
   const presenter = new MainLayoutPresenter({
-    model: Model.Users
-  })
+    model: Model,
+    view: {
+      setUser: setUser
+    }
+  });
+
+  useEffect(() => {
+    presenter.getUser();
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -173,11 +182,11 @@ const MainLayout = ({ children }) => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <div className="user-info">
-                    <h6>Adam</h6>
+                    <h6>{user?.name}</h6>
                     <small className="text-muted">Administrator</small>
                   </div>
                   <Dropdown.Divider />
-                  <Dropdown.Item as={Link} to="/dashboard/profile">
+                  <Dropdown.Item as={Link} to="/dashboard/profile" state={{user}}>
                     <FaUser className="me-2" /> Profil
                   </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/dashboard/settings">

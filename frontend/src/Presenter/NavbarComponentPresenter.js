@@ -18,4 +18,15 @@ export default class NavbarComponentPresenter {
             console.error(err);
         }
     }
+
+    async getUser() {
+        try {
+            const res = await this.#model.getUser();
+            console.log(res);
+            this.#view.setUser(res.user);
+        } catch {
+            this.#view.navigate("/login");
+        }
+    }
+
 }

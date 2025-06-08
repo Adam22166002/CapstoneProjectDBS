@@ -78,6 +78,7 @@ export class ArticlePresenter {
     if (!user_id) return;
     try {
       const res = await this.model.getlike(user_id, artikel_id);
+      this.getLikes(artikel_id);
       console.log(res);
       if (res.status === "success") {
         if (res.data.status === "like") {
@@ -87,6 +88,16 @@ export class ArticlePresenter {
           this.view.updateLikeStatus("dislike");
         }
       }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async getLikes(id) {
+    try {
+      const res = await this.model.getLikes(id);
+      console.log(res);
+      this.view.setLikes(res.data);
     } catch (err) {
       console.error(err);
     }
@@ -137,5 +148,26 @@ export class ArticlePresenter {
 
   formatDate(dateString) {
     return new Date(dateString).toLocaleDateString();
+  }
+
+  createAt(dateString) {
+    const date = new Date(dateString);
+    const mount = date.getMonth();
+    const timeOld = date.getTime();
+    const timeNow = Date.now();
+    let time = (timeNow - timeOld) / (1000 * 60);
+    let message = `${parseInt(time)} menit yang lalu`;
+    if (time > 60) {
+      time = (timeNow - timeOld) / (1000 * 60 * 60);
+      message = `${parseInt(time)} Jam yang lalu`;
+      if (time > 24) {
+        time = (timeNow - timeOld) / (1000 * 60 * 60 * 24);
+        message = `${parseInt(time)} Hari yang lalu`;
+        if (time > 30) {
+          message = '1 bulan yang lalu';
+        }
+      }
+    }
+    return message;
   }
 }
