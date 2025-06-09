@@ -2,6 +2,8 @@ import { startSession, submitAnswer, getAllCategories, getCekKesehatanDetail } f
 import Kesehatan from "../models/kesehatan-model.js";
 import axios from 'axios';
 import FormData from 'form-data';
+import HasilKonsultasiKesehatan from "../models/hasilKonsultasiKesehatan-model.js";
+import HasilCekKesehatan from "../models/hasilCekKesehatan-model.js";
 
 export const handleStartSession = async (request, h) => {
     try {
@@ -117,7 +119,7 @@ export const createKesehatan = async (request, h) => {
 
 
 export const predictKulit = async (request, h) => {
-  const { file } = request.payload;
+  const { file, userId } = request.payload;
 
   if (!file || !file.hapi || !file._data) {
     return h.response({ error: 'No file uploaded' }).code(400);
@@ -137,11 +139,23 @@ export const predictKulit = async (request, h) => {
     const kelas = response.data.class;
     const akurasi = response.data.confidence;
 
+    const deskripsi =` Ciri-ciri yang ditemukan mengarah pada kemungkinan Anda mengidap penyakit ${kelas}`;
+    const saran = `Diperlukan pemeriksaan lebih lanjut untuk memastikan diagnosis penyakit ${kelas}, Pergi ke rumah sakit atau puskesmas terdekat untuk di tindak lanjuti`;
+
+    // Simpan ke database
+    await HasilKonsultasiKesehatan.create({
+      user_id: userId,
+      hasil_prediksi: kelas,
+      saran: saran,
+      currentTime: new Date()
+    });
+
     return h.response({
-      deskripsi:`Ciri-ciri yang ditemukan mengarah pada kemungkinan Anda mengidap penyakit <strong>${kelas}</strong>`,
-      saran:`Diperlukan pemeriksaan lebih lanjut untuk memastikan diagnosis penyakit <strong>${kelas}</strong>, Pergi ke rumah sakit atau puskesmas terdekat untuk di tindak lanjuti`,
+      deskripsi: deskripsi,
+      saran: saran,
       kepercayaan_diri: akurasi
     }).code(200);
+
   } catch (error) {
     console.error('Error forwarding to ML model:', error.message);
     return h.response({
@@ -152,7 +166,9 @@ export const predictKulit = async (request, h) => {
 };
 
 export const predictKesehatan = async (request, h) => {
-  const { symptoms } = request.payload;
+  const { symptoms, user } = request.payload;
+  // Ambil user_id dari auth credentials
+
 
   if (!symptoms) {
     return h.response({ error: 'Symptoms data required' }).code(400);
@@ -160,12 +176,21 @@ export const predictKesehatan = async (request, h) => {
 
   try {
     const response = await axios.post('http://127.0.0.1:3000/predict-kesehatan', { symptoms });
-
     const prediksi = response.data.predicted;
 
+    const deskripsi = `Anda terdeteksi mengalami gejala dan resiko yang mengarah pada penyakit ${prediksi}.`;
+    const saran = `Sebaiknya segera lakukan pemeriksaan medis di fasilitas kesehatan terdekat untuk mendapatkan diagnosis yang tepat mengenai penyakit ${prediksi}.`;
+
+    // Simpan ke database
+    await HasilCekKesehatan.create({
+      user_id: user.userID,
+      hasil_prediksi: deskripsi,
+      saran: saran
+    });
+
     return h.response({
-      deskripsi:`Anda terdeteksi mengalami gejala dan resiko yang mengarah pada penyakit ${prediksi}.`,
-      saran:`Sebaiknya segera lakukan pemeriksaan medis di fasilitas kesehatan terdekat untuk mendapatkan diagnosis yang tepat mengenai penyakit ${prediksi}.`
+      deskripsi,
+      saran
     }).code(200);
   } catch (error) {
     console.error('Error forwarding to ML model:', error.message);

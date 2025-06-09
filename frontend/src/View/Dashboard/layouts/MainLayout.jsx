@@ -21,7 +21,8 @@ const MainLayout = ({ children }) => {
   const presenter = new MainLayoutPresenter({
     model: Model,
     view: {
-      setUser: setUser
+      setUser: setUser,
+      navigate: navigate
     }
   });
 
@@ -44,7 +45,7 @@ const MainLayout = ({ children }) => {
   };
 
   const handleLogout = () => {
-    navigate("/login")
+    presenter.Logout();
   };
 
   // Menu navigasi untuk sidebar
@@ -69,7 +70,8 @@ const MainLayout = ({ children }) => {
         { path: '/dashboard/health-info/categories', icon: <FaListUl />, label: 'Kategori' }
       ]
     },
-    { path: '/dashboard/health', icon: <FaChartBar />, label: 'Analitik' },
+    { path: '/dashboard/health', icon: <FaChartBar />, label: 'Cek Kesehatan' },
+    { path: '/dashboard/konsultasi', icon: <FaChartBar />, label: 'Konsultasi Penyakit' },
     { path: '/dashboard/settings', icon: <FaCog />, label: 'Pengaturan' },
     { path: '/dashboard/profile', icon: <FaUser />, label: 'Profil' }
   ];

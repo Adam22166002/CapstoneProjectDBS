@@ -40,9 +40,6 @@ const Dashboard = () => {
       <div className="page-header mb-4">
         <h1 className="h3 mb-1">Dashboard</h1>
         <p className="text-muted mb-0">Ringkasan data dan statistik utama untuk memantau kinerja sistem secara real-time.</p>
-        {/* <Button variant="primary">
-          <FaDownload className="me-2" /> Unduh Laporan
-        </Button> */}
       </div>
 
       {/* Statistic Cards */}
@@ -208,7 +205,7 @@ const Dashboard = () => {
 
       {/* Recent Content and Activities */}
       <Row>
-        <Col xl={8} className="mb-4">
+        <Col className="mb-4">
           <Card>
             <Card.Header className="d-flex justify-content-between align-items-center">
               <h6 className="m-0 font-weight-bold">Artikel Terbaru</h6>
@@ -239,7 +236,7 @@ const Dashboard = () => {
             </Card.Body>
           </Card>
         </Col>
-        <Col xl={4} className="mb-4">
+        {/* <Col xl={4} className="mb-4">
           <Card>
             <Card.Header className="d-flex justify-content-between align-items-center">
               <h6 className="m-0 font-weight-bold">Aktivitas Terbaru</h6>
@@ -299,7 +296,7 @@ const Dashboard = () => {
               </div>
             </Card.Body>
           </Card>
-        </Col>
+        </Col> */}
       </Row>
     </div>
   );

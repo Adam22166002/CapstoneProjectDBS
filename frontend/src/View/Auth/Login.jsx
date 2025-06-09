@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import Users from "../../Model/users";
 import LoadingBerputar from "../../Animation Loading/LoadingBerputar";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import LoginPresenter from "../../Presenter/LoginPresenter";
 
 export default function Login() {
@@ -60,7 +60,7 @@ export default function Login() {
                                 <span>Don't have account? <a href="/register">Sign Up</a></span>
                             </div>
                             <div className="text-center mb-10px">
-                                <a href="">Reset Password</a>
+                                <Link to="/forgot-password">Reset Password</Link>
                             </div>
                         </form>
                     </div>

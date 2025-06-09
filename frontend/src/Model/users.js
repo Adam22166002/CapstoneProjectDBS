@@ -1,4 +1,4 @@
-import Cookie from './accessCookie';
+import Cookie from './accessCookie.js';
 import { instance } from './index';
 
 class Users {
@@ -10,7 +10,10 @@ class Users {
         return res.data;
     }
     static async Logout() {
-        
+        const res = await instance.get('/logout', {
+            withCredentials: true
+        });
+        return res.data;
     }
     static async Register(data) {
         const res = await instance.post('/user', data);

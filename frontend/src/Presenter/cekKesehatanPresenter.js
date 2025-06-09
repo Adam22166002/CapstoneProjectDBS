@@ -40,10 +40,10 @@ export default class KesehatanPresenter {
         }
     }
 
-    async PredictKesehatan(value) {
+    async PredictKesehatan(value, user) {
         this.#view.setLoadingPredict(true);
         try {
-            const res = await this.#model.PredictKesehatan(value);
+            const res = await this.#model.PredictKesehatan(value, user);
             console.log(res);
             this.#view.setPredicted(res);
         } catch (err) {

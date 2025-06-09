@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import db from '../config/db.js';
 import {Users} from './auth-model.js'
 
-const HasilCekKesehatan = db.define('HasilCekKesehatan', {
+const HasilKonsultasiKesehatan = db.define('HasilKonsultasiKesehatan', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -32,12 +32,12 @@ const HasilCekKesehatan = db.define('HasilCekKesehatan', {
   }
 }, {
   freezeTableName: false,
-  tableName: 'hasil_cek_kesehatan',
+  tableName: 'hasil_konsultasi_kesehatan',
   timestamps: false
 });
 
-export default HasilCekKesehatan;
+export default HasilKonsultasiKesehatan;
 
 
-Users.hasMany(HasilCekKesehatan, { foreignKey: 'user_id' });
-HasilCekKesehatan.belongsTo(Users, { foreignKey: 'user_id' });
+Users.hasMany(HasilKonsultasiKesehatan, { foreignKey: 'user_id' });
+HasilKonsultasiKesehatan.belongsTo(Users, { foreignKey: 'user_id' });

@@ -3,9 +3,10 @@ import Cookie from "./accessCookie";
 
 export default class Kesehatan {
 
-    async PredictKesehatan(value) {
+    async PredictKesehatan(value, user) {
         const res = await instance.post('/predict-kesehatan', {
-            symptoms: value
+            symptoms: value,
+            user: user
         });
 
         return res.data;

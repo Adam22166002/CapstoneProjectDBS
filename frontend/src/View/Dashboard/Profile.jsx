@@ -25,25 +25,13 @@ const Profile = () => {
   
   // Data statis untuk profil pengguna
   const [profileData, setProfileData] = useState({
-    id: 'USR-123456',
-    name: 'Admin Kesehatan',
+    id: '12',
+    name: 'Admin',
     email: 'admin@healthapp.com',
     phone: '+62 812 3456 7890',
     address: 'Jl. Kesehatan No. 123, Jakarta Selatan',
     role: 'Admin',
-    joinDate: '10 Januari 2023',
-    lastLogin: '15 Mei 2025, 08:30 WIB',
-    avatar: '/api/placeholder/150/150'
   });
-
-  // Data statis untuk riwayat aktivitas
-  const activityHistory = [
-    { id: 1, activity: 'Memperbarui Artikel "Tips Hidup Sehat"', date: '14 Mei 2025, 14:30 WIB' },
-    { id: 2, activity: 'Menambah Kategori "Kesehatan Mental"', date: '12 Mei 2025, 10:15 WIB' },
-    { id: 3, activity: 'Mengubah pengaturan notifikasi', date: '10 Mei 2025, 16:45 WIB' },
-    { id: 4, activity: 'Menambahkan user baru "dr. Santi"', date: '09 Mei 2025, 11:20 WIB' },
-    { id: 5, activity: 'Login ke sistem', date: '09 Mei 2025, 08:00 WIB' }
-  ];
 
   // Form data untuk edit profil
   const [formData, setFormData] = useState({
@@ -173,24 +161,6 @@ const Profile = () => {
                     Informasi Profil
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link 
-                    eventKey="password" 
-                    onClick={() => setActiveTab('password')}
-                    className={activeTab === 'password' ? 'active' : ''}
-                  >
-                    Ubah Password
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link 
-                    eventKey="activity" 
-                    onClick={() => setActiveTab('activity')}
-                    className={activeTab === 'activity' ? 'active' : ''}
-                  >
-                    Riwayat Aktivitas
-                  </Nav.Link>
-                </Nav.Item>
               </Nav>
             </Card.Header>
             
@@ -276,88 +246,6 @@ const Profile = () => {
                     </div>
                   )}
                 </Form>
-              )}
-              
-              {activeTab === 'password' && (
-                <Form onSubmit={handlePasswordSubmit}>
-                  <Row className="justify-content-center">
-                    <Col md={8}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>
-                          <FaLock className="me-2" />
-                          Password Saat Ini
-                        </Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="currentPassword"
-                          value={passwordData.currentPassword}
-                          onChange={handlePasswordChange}
-                          required
-                        />
-                      </Form.Group>
-                      
-                      <Form.Group className="mb-3">
-                        <Form.Label>
-                          <FaLock className="me-2" />
-                          Password Baru
-                        </Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="newPassword"
-                          value={passwordData.newPassword}
-                          onChange={handlePasswordChange}
-                          required
-                        />
-                        <Form.Text className="text-muted">
-                          Password minimal 8 karakter dengan kombinasi huruf dan angka.
-                        </Form.Text>
-                      </Form.Group>
-                      
-                      <Form.Group className="mb-3">
-                        <Form.Label>
-                          <FaLock className="me-2" />
-                          Konfirmasi Password Baru
-                        </Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="confirmPassword"
-                          value={passwordData.confirmPassword}
-                          onChange={handlePasswordChange}
-                          required
-                        />
-                      </Form.Group>
-                      
-                      <div className="d-grid">
-                        <Button variant="primary" type="submit">
-                          Ubah Password
-                        </Button>
-                      </div>
-                    </Col>
-                  </Row>
-                </Form>
-              )}
-              
-              {activeTab === 'activity' && (
-                <div className="table-responsive">
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>Aktivitas</th>
-                        <th>Tanggal</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {activityHistory.map((item, index) => (
-                        <tr key={item.id}>
-                          <td>{index + 1}</td>
-                          <td>{item.activity}</td>
-                          <td>{item.date}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
               )}
             </Card.Body>
           </Card>

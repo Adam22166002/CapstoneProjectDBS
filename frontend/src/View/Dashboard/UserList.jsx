@@ -110,8 +110,6 @@ const UserList = () => {
                     <th>Nama</th>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>Status</th>
-                    <th>Login Terakhir</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
@@ -122,13 +120,7 @@ const UserList = () => {
                         <td>{user.id}</td>
                         <td>{user.name}</td>
                         <td>{user.email}</td>
-                        <td>{user.roleId}</td>
-                        <td>
-                          <Badge bg={user?.status === 'Aktif' ? 'success' : 'danger'}>
-                            {user?.status}
-                          </Badge>
-                        </td>
-                        <td>{user?.lastLogin}</td>
+                        <td>{user.roleId.name}</td>
                         <td>
                           <Button variant="warning" size="sm" className="me-1" onClick={() => handleEdit(user.id)}>
                             <FaEdit />

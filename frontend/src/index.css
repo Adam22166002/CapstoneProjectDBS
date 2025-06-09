@@ -56,6 +56,9 @@ a {
 .rounded-20px {
   border-radius: 20px;
 }
+.rounded-full {
+  border-radius: 50%;
+}
 .hover-border-black:hover {
   border: 2px solid rgb(61, 61, 61) !important;
 }

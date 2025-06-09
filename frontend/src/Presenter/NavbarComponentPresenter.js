@@ -25,7 +25,7 @@ export default class NavbarComponentPresenter {
             console.log(res);
             this.#view.setUser(res.user);
         } catch {
-            this.#view.navigate("/login");
+            this.#view.setUser(null);
         }
     }
 

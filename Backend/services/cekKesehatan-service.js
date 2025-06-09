@@ -1,5 +1,4 @@
 import { Op } from 'sequelize';
-import { PertanyaanKesehatan, SessionCekKesehatan, HasilKesehatan } from '../models/hasilCekKesehatan-model.js';
 import CekKesehatan from '../models/cekKesehatan-model.js';
 import KategoriKesehatan from '../models/kategori-kesehatan.js';
 

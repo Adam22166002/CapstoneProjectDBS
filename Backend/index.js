@@ -14,7 +14,6 @@ import routeUser from './routes/user-route.js';
 import routeKategori from './routes/kategori-route.js';
 import Artikel from './models/artikel-model.js';
 import routeArtikel from './routes/artikel-route.js';
-import { HasilKesehatan, PertanyaanKesehatan, SessionCekKesehatan } from './models/hasilCekKesehatan-model.js';
 import routesCekKesehatan from './routes/cekKesehatan-route.js';
 import Kesehatan from './models/kesehatan-model.js';
 import likesRoute from './routes/likes-route.js';
@@ -64,7 +63,7 @@ const init = async () => {
         await db.sync({ alter: true });
         // await Kesehatan.sync()
         // await Artikel.sync({ alter: true });
-        await Konsultasi.sync()
+        // await Konsultasi.sync()
     } catch (error) {
         
     }

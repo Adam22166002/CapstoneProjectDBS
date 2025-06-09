@@ -1,4 +1,4 @@
-import { getUser, Login, refreshToken, Register, requestPasswordReset, resetPassword } from "../controllers/auth-controller.js";
+import { getUser, Login, Logout, refreshToken, Register, requestPasswordReset, resetPassword } from "../controllers/auth-controller.js";
 import {verifyToken} from "../middleware/verifyToken.js";
 
 const routeAuth = [
@@ -28,7 +28,11 @@ const routeAuth = [
         path: '/token',
         handler: refreshToken
     },
-
+    {
+        method: "GET",
+        path: "/logout",
+        handler: Logout
+    },
    {
     method: 'POST',
     path: '/request-password-reset',
@@ -39,7 +43,6 @@ const routeAuth = [
     path: '/reset-password/{token}',
     handler: resetPassword
   }
-    
 ]
 
 export default routeAuth

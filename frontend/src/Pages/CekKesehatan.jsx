@@ -52,7 +52,7 @@ const CekKesehatan = () => {
   async function hanldePertanyaan(value) {
     if ((pertanyaan + 1) >= (kategoriPertanyaan.length)) {
       setJawaban(jawaban + " " + kategoriPertanyaan[pertanyaan].name_symptom);
-      await presenter.PredictKesehatan(jawaban);
+      await presenter.PredictKesehatan(jawaban, user);
       setShowPertanyaan(false);
       return;
     }

@@ -26,6 +26,7 @@ import SetupRoleAdmin from "./SetupRoleAdmin";
 import SetupRoleUser from "./SetupRoleUser";
 import Error404 from "./View/Errors/404";
 import KesehatanList from "./View/Dashboard/KesehatanList";
+import KonsultasiList from "./View/Dashboard/KonsultasiList";
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
         <Route path="health-info/categories" element={<Categories />} />
         <Route path="settings" element={<Settings />} />
         <Route path="health" element={<KesehatanList />} />
+        <Route path="konsultasi" element={<KonsultasiList />} />
       </Route>
 
       <Route path="/*" element={<Error404 />} />

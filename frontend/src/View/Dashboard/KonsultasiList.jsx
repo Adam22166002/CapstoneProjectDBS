@@ -2,16 +2,16 @@ import { useState } from "react";
 import { Container, Row, Col, Card, Table, Button, Form, InputGroup, Badge, Pagination, Image } from 'react-bootstrap';
 import { FaSearch, FaEdit, FaTrash, FaPlus, FaEye } from 'react-icons/fa';
 
-const KesehatanList = () => {
-    const [kesehatan, setKesehatan] = useState(null);
-    const [renderKesehatan, setRenderKesehatan] = useState(null);
+const KonsultasiList = () => {
+    const [konsultasi, setKonsultasi] = useState(null);
+    const [renderkonsultasi, setRenderKonsultasi] = useState(null);
 
 
     return (
         <Container fluid>
             <Row className="mb-4">
                 <Col>
-                    <h2 className="mb-3">Data Cek Kesehatan User</h2>
+                    <h2 className="mb-3">Data Konsultasi Penyakit User</h2>
                     <Card>
                         <Card.Body>
                             <Row className="mb-3">
@@ -40,14 +40,14 @@ const KesehatanList = () => {
                                     <tr>
                                         <th>#</th>
                                         <th>Nama User</th>
-                                        <th>Prediksi</th>
+                                        <th>Prediksi Penyakit</th>
                                         <th>Saran</th>
                                         <th>Tanggal</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { renderKesehatan?.map((value, index) => (
+                                    { renderkonsultasi?.map((value, index) => (
                                         <tr key={value?.id}>
                                             <td>{index + 1}</td>
                                             <td>
@@ -105,4 +105,4 @@ const KesehatanList = () => {
 };
 
 
-export default KesehatanList;
+export default KonsultasiList;

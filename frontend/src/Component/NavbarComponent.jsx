@@ -38,10 +38,13 @@ const NavbarComponent = () => {
 
   useEffect(() => {
     presenter.getKategori();
+    presenter.getUser();
   }, []);
 
   const handleSelect = async (id) => {
-    await presenter.getUser();
+    if (!user) {
+      return navigate("/login");
+    }
     navigate(`/cek-kesehatan/${id}`);
   };
 
@@ -130,13 +133,15 @@ const NavbarComponent = () => {
                 </Button>
               </InputGroup>
             </Form>
-            <Button
-              variant="primary"
-              href="/login"
-              className="border text-white"
-            >
-              Masuk
-            </Button>
+            {user ? 
+              <img src="/image/profile-default.jpg" className="w-20px h-20px rounded-full" alt="profile" /> :
+              <Button
+                variant="primary"
+                href="/login"
+                className="border text-white"
+              >
+                Masuk
+              </Button>}
           </div>
         </Navbar.Collapse>
       </Container>

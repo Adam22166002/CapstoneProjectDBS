@@ -9,7 +9,7 @@ export default class KonsultasiPresenter {
         this.#view = view;
     }
 
-    async submitKonsultasi(url_image, image) {
+    async submitKonsultasi(url_image, image, user) {
         if (!image) return;
 
         this.#view.setIsLoading(true);
@@ -29,6 +29,7 @@ export default class KonsultasiPresenter {
             // Prepare FormData for API
             const formData = new FormData();
             formData.append('file', image);
+            formData.append('user', user);
 
             // TODO: Replace with your actual API endpoint
             const res = await this.#model.createPredict(formData);
