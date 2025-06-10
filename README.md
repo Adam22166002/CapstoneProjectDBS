@@ -29,7 +29,12 @@ node index.js
 cd frontend
 ````
 
-7. Jalankan frontend
+7. Instal node module
+````
+npm install
+````
+
+8. Jalankan frontend
 ````
 npm run dev
 ````
