@@ -4,10 +4,10 @@ import {
   FaPhoneAlt, FaComments, FaStethoscope, FaHeartbeat, FaSearch, FaBookmark, FaShare, 
   FaFacebook, FaTwitter, FaWhatsapp, FaInstagram, FaEnvelope, FaCalendarAlt, FaArrowRight
 } from 'react-icons/fa';
-import NavbarComponent from '../Component/NavbarComponent';
-import FooterComponent from '../Component/FooterComponent';
-import SubscriptionForm from '../Component/SubscriptionForm';
-import { articlePresenter } from '../Presenter/ArtikelHomePresenter';
+import NavbarComponent from '../../Component/NavbarComponent';
+import FooterComponent from '../../Component/FooterComponent';
+import SubscriptionForm from '../../Component/SubscriptionForm';
+import { articlePresenter } from '../../Presenter/ArtikelHomePresenter';
 
 const ArticleCategoryView = () => {
   const {

@@ -361,3 +361,6 @@ footer a:hover {
 .active-border-primary:active {
   border: 1px solid green;
 }
+.color-green {
+  color: green;
+}

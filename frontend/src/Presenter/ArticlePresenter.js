@@ -36,7 +36,6 @@ export default class ArticlePresenter {
     async getArticle() {
         try {
             const res = await this.#model.getArticle();
-            console.log(res);
             this.#view.setRenderArticle(res.data);
             this.#view.setArticle(res.data);
         } catch (err) {
@@ -51,7 +50,6 @@ export default class ArticlePresenter {
             }
             const res = await this.#model.deleteArticle(id);
             await this.getArticle();
-            console.log(res);
         } catch (err) {
             console.error(err);
         }

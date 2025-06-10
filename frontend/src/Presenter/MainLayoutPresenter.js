@@ -10,9 +10,9 @@ export default class MainLayoutPresenter {
 
     async Logout() {
         try {
-            if (confirm("Apakah anda yakin ingin menghapusnya?")) {
+            if (confirm("Apakah anda yakin ingin Logout?")) {
                 const res = await this.#model.Users.Logout();
-                console.log(res);
+                alert(res.message);
                 this.#view.navigate("/login");
             }
         } catch (err) {

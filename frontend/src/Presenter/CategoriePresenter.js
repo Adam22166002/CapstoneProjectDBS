@@ -13,7 +13,6 @@ export default class CategoriPresenter {
         try {
             const res = await this.#model.getKategori();
             this.#view.Kategoris(res.data);
-            console.log(res);
         } catch (err) {
             console.error(err);
         } finally {
@@ -30,7 +29,6 @@ export default class CategoriPresenter {
             data.append("images", image);
             const res = await this.#model.createKategori(data);
             this.getKategori();
-            console.log(res);
         } catch (err) {
             console.error(err);
         } finally {
@@ -47,7 +45,6 @@ export default class CategoriPresenter {
             data.append("deskripsi", deskripsi);
             data.append("images", image);
             const res = await this.#model.editKategori(id, data);
-            console.log(res);
             await this.getKategori();
         } catch (err) {
             console.error(err);

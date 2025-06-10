@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import { instance } from '.';
 
 export class ArticleModel {

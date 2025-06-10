@@ -14,9 +14,11 @@ export default class ForgotPasswordPresenter {
 
         try {
             const res = await this.#model.ForgotPassword(email);
-            console.log(res);
+            this.#view.setResponse(res);
         } catch (err) {
             console.error(err);
+        } finally {
+            this.#view.setLoading(false);
         }
     }
 }

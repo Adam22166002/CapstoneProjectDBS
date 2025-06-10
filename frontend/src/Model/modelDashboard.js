@@ -67,4 +67,10 @@ export default class Dashboard {
 
         return res.data;
     }
+    static async Logout() {
+        const res = await instance.get('/logout', {
+            withCredentials: true
+        });
+        return res.data;
+    }
 }

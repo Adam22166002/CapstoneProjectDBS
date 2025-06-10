@@ -14,7 +14,6 @@ export default class KesehatanPresenter {
         this.#view.setLoading(true);
         try {
             const res = await this.#model.getCookie();
-            console.log(res);
             if (res.status === "success") {
                 
             }
@@ -29,7 +28,6 @@ export default class KesehatanPresenter {
         this.#view.setLoading(true);
         try {
             const res = await this.#model.getUser();
-            console.log(res);
             this.#view.setUser(res.user);
         } catch (err) {
             if (err.status === 401) {
@@ -44,7 +42,6 @@ export default class KesehatanPresenter {
         this.#view.setLoadingPredict(true);
         try {
             const res = await this.#model.PredictKesehatan(value, user);
-            console.log(res);
             this.#view.setPredicted(res);
         } catch (err) {
             console.error(err);
@@ -58,7 +55,6 @@ export default class KesehatanPresenter {
 
         try {
             const res = await this.#model.getPertanyaan(id);
-            console.log(res);
             this.#view.setKategoriPertanyaan(res.data);
         } catch (err) {
             console.error(err);

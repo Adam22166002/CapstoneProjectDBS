@@ -56,7 +56,6 @@ export class ArticlePresenter {
   async handleLike(user_id, artikel_id, status) {
     try {
       const res = await this.model.createLike(user_id, artikel_id, status);
-      console.log(res);
       await this.getLike(user_id, artikel_id);
     } catch (err) {
       console.error("Terjadi Error:", err);
@@ -79,7 +78,6 @@ export class ArticlePresenter {
     try {
       const res = await this.model.getlike(user_id, artikel_id);
       this.getLikes(artikel_id);
-      console.log(res);
       if (res.status === "success") {
         if (res.data.status === "like") {
           this.view.updateLikeStatus("like");

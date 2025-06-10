@@ -1,4 +1,4 @@
-import {useState } from "react";
+import { useState } from "react";
 import LoadingBerputar from "../../Animation Loading/LoadingBerputar";
 import Users from "../../Model/users";
 import RegisterPresenter from "../../Presenter/RegisterPresenter";
@@ -14,10 +14,8 @@ export default function Register() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [isActive, setActive] = useState(true);
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState(null);
     const [Loading, setLoading] = useState(false);
-    const [disable, setDisable] = useState(true);
     const [LoadingCheck, setLoadingCheck] = useState(false);
     const [showCheck, setShowCheck] = useState(false);
     const [emailAvailable, setEmailAvailable] = useState(true);
@@ -25,10 +23,8 @@ export default function Register() {
     const presenter = new RegisterPresenter({
         model: Users,
         view: {
-            setActive: setActive,
             setLoading: setLoading,
             setMessage: setMessage,
-            setDisable: setDisable,
             navigate: navigate,
             setShowCheck: setShowCheck,
             setLoadingCheck: setLoadingCheck,
@@ -36,10 +32,6 @@ export default function Register() {
         }
     })
 
-    function Next(e) {
-        e.preventDefault();
-        presenter.Next(name, email);
-    }
     async function Submit(e) {
         e.preventDefault();
         await presenter.Register(name, email, password, confirmPassword);
@@ -47,7 +39,7 @@ export default function Register() {
 
     async function hanldeInputEmail(e) {
         setEmail(e.target.value);
-        setTimeout( async () => {
+        setTimeout(async () => {
             await presenter.searchEmail(e.target.value);
         }, 500);
     }
@@ -62,46 +54,35 @@ export default function Register() {
                     <div className="m-15px">
                         <h3 className="m-0">Get Started</h3>
                         <span className="fs-15px color-span">
-                        Buat akun untuk mulai mengakses berbagai informasi dan layanan kesehatan terpercaya.
+                            Buat akun untuk mulai mengakses berbagai informasi dan layanan kesehatan terpercaya.
                         </span>
                     </div>
                     <form onSubmit={Submit}>
-                        <span>{message}</span>
-                        {isActive ? (
                             <>
-                                <div className="mb-20px">
+                                <div>
                                     <label htmlFor="text">Name</label>
-                                    <input type="text" name="name" id="name" onChange={(e) => setName(e.target.value)} placeholder="username" className="d-block w-100 p-8px pi-15 rounded-20px mb-5px border border-0 outline-1" disabled={Loading} />
+                                    <input type="text" name="name" id="name" onChange={(e) => setName(e.target.value)} placeholder="username" className="d-block w-100 p-8px pi-15 rounded-20px mb-5px border border-0 outline-1" disabled={Loading} required />
                                 </div>
-                                <div className="mb-20px">
+                                <div>
                                     <label htmlFor="email">Email Address</label>
                                     <div className="d-flex align-items-center justify-content-center w-100 p-8px pi-15 rounded-20px mb-5px border border-0 outline-1">
-                                        <input type="email" name="email" id="email" onChange={hanldeInputEmail} placeholder="email@gmail.com" className="border border-0 outline-0 w-95" disabled={Loading} />
-                                        { showCheck ? 
-                                        <>
-                                        { LoadingCheck ? <div className="w-20px"><LoadingBerputar wdith={20} hiegth={20} /></div> : emailAvailable ? <div className="c-red"><FaTimesCircle/></div> : <div className="c-green"><FaCheckCircle /></div>}
-                                        </> : <></> }
+                                        <input type="email" name="email" id="email" onChange={hanldeInputEmail} placeholder="email@gmail.com" className="border border-0 outline-0 w-100" disabled={Loading} required />
+                                        {showCheck ?
+                                            <>
+                                                {LoadingCheck ? <div className="w-20px"><LoadingBerputar wdith={20} hiegth={20} /></div> : emailAvailable ? <div className="c-red"><FaTimesCircle /></div> : <div className="c-green"><FaCheckCircle /></div>}
+                                            </> : <></>}
                                     </div>
                                 </div>
-                                <button onClick={Next} className="w-100 btn btn-primary text-light rounded-20px mb-20px fs-6 border border-0 p-8px text-align-center" disabled={Loading}>
-                                    {Loading ? (
-                                        <LoadingBerputar wdith={20} hiegth={20} />
-                                    ) : (
-                                        <span>Next</span>
-                                    )}
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <div className="mb-20px">
+                                <div>
                                     <label htmlFor="password">Password</label>
-                                    <input type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)} placeholder="********" className="d-block w-100 p-8px pi-15 rounded-20px mb-5px border border-0 outline-1" disabled={Loading} />
+                                    <input type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)} placeholder="********" className="d-block w-100 p-8px pi-15 rounded-20px mb-5px border border-0 outline-1" disabled={Loading} required />
                                 </div>
-                                <div className="mb-20px">
+                                {message?.name === "password" ? <p className="text-danger">{message.message}</p> : <></>}
+                                <div>
                                     <label htmlFor="confirm-password">Confirm Password</label>
-                                    <input type="password" onChange={(e) => setConfirmPassword(e.target.value)} name="confirm-password" id="confirm-password" placeholder="********" className="d-block w-100 p-8px pi-15 rounded-20px mb-5px border border-0 outline-1" disabled={Loading} />
+                                    <input type="password" onChange={(e) => setConfirmPassword(e.target.value)} name="confirm-password" id="confirm-password" placeholder="********" className="d-block w-100 p-8px pi-15 rounded-20px mb-5px border border-0 outline-1" disabled={Loading} required />
                                 </div>
-                                <button type="submit" className="w-100 btn btn-primary text-light rounded-20px mb-20px fs-6 border  border-0 p-8px text-align-center" disabled={Loading}>
+                                <button type="submit" className="w-100 btn btn-primary text-light rounded-20px mb-20px fs-6 border  border-0 p-8px text-align-center" disabled={emailAvailable}>
                                     {Loading ? (
                                         <LoadingBerputar wdith={20} hiegth={20} />
                                     ) : (
@@ -109,7 +90,6 @@ export default function Register() {
                                     )}
                                 </button>
                             </>
-                        )}
                         <div className="text-center mb-10px">
                             <span>I have already account? <a href="/login">Login</a></span>
                         </div>

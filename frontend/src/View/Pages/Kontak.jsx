@@ -8,9 +8,9 @@ import {
   Dropdown, NavDropdown, Navbar, Nav, Container, Button,
   Card, Row, Col, Form, InputGroup
 } from "react-bootstrap";
-import { ContactPresenter } from '../Presenter/ContactPresenter';
-import NavbarComponent from '../Component/NavbarComponent';
-import FooterComponent from '../Component/FooterComponent';
+import { ContactPresenter } from '../../Presenter/ContactPresenter';
+import NavbarComponent from '../../Component/NavbarComponent';
+import FooterComponent from '../../Component/FooterComponent';
 
 export default function ContactView() {
   const [formData, setFormData] = useState({});

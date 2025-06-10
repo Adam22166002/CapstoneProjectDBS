@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import axios from "axios";
 import {
   Navbar,
@@ -9,6 +9,7 @@ import {
   Form,
   InputGroup,
   Button,
+  Dropdown,
 } from "react-bootstrap";
 import {
   FaSearch,
@@ -17,6 +18,8 @@ import {
   FaComments,
   FaHeartbeat,
   FaEnvelope,
+  FaUser,
+  FaSignOutAlt,
 } from "react-icons/fa";
 import NavbarComponentPresenter from "../Presenter/NavbarComponentPresenter";
 import Dashboard from "../Model/modelDashboard";
@@ -34,7 +37,11 @@ const NavbarComponent = () => {
       setUser: setUser,
       navigate: navigate
     }
-  })
+  });
+
+  async function handleLogout() {
+    await presenter.Logout();
+  }
 
   useEffect(() => {
     presenter.getKategori();
@@ -134,7 +141,23 @@ const NavbarComponent = () => {
               </InputGroup>
             </Form>
             {user ? 
-              <img src="/image/profile-default.jpg" className="w-20px h-20px rounded-full" alt="profile" /> :
+              <Dropdown align="end" className="user-dropdown">
+                <Dropdown.Toggle variant="link" id="user-dropdown">
+                  <img 
+                    src="/image/profile-default.jpg" 
+                    alt="User" 
+                    className="user-avatar" 
+                  />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <div className="user-info">
+                    <h6>{user?.name}</h6>
+                  </div>
+                  <Dropdown.Item onClick={handleLogout}>
+                    <FaSignOutAlt className="me-2" /> Keluar
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown> :
               <Button
                 variant="primary"
                 href="/login"

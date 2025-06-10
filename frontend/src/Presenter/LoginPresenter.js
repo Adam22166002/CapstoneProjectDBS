@@ -15,7 +15,6 @@ export default class LoginPresenter {
         try {
 
             const res = await this.#model.AuthLogin({ email, password });
-            console.log(res);
 
             if (res.roles) {
 

@@ -23,9 +23,9 @@ import {
   FaArrowRight,
   FaUserMd,
 } from "react-icons/fa";
-import { HomePresenter } from '../Presenter/HomePresenter';
-import NavbarComponent from '../Component/NavbarComponent';
-import FooterComponent from '../Component/FooterComponent';
+import { HomePresenter } from '../../Presenter/HomePresenter';
+import NavbarComponent from '../../Component/NavbarComponent';
+import FooterComponent from '../../Component/FooterComponent';
 
 export default function Home() {
   const role = "user"; 

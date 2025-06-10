@@ -4,8 +4,8 @@ import { Dropdown, NavDropdown, Navbar, Container, Row, Col, Card, Button, Form,
 import { 
   FaPhoneAlt, FaComments, FaStethoscope, FaSearch,
 } from 'react-icons/fa';
-import NavbarComponent from '../Component/NavbarComponent';
-import FooterComponent from '../Component/FooterComponent';
+import NavbarComponent from '../../Component/NavbarComponent';
+import FooterComponent from '../../Component/FooterComponent';
 import { Link } from 'react-router';
 
 const KategoriPage = () => {

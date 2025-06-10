@@ -27,10 +27,7 @@ export default class UserListPresenter {
 
     async deleteUser(id) {
 
-        if (!confirm("Apakah anda yakin ingin menghapusnya?")) {
-            console.log("Tidak jadi");
-            return;
-        }
+        if (!confirm("Apakah anda yakin ingin menghapusnya?")) return;
 
         this.#view.setLoading(true);
 

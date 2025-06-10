@@ -26,4 +26,19 @@ export default class Kesehatan {
         });
         return res.data;
     }
+
+    async getKesehatan() {
+        const res = await instance.get('/kesehatan');
+        return res.data;
+    }
+
+    async deleteKesehatan(id) {
+        const res = await instance.delete(`/kesehatan/${id}`);
+        return res.data;
+    }
+
+    async getUserFromId(id) {
+        const res = await instance.get(`/api/user/${id}`);
+        return res.data;
+    }
 }

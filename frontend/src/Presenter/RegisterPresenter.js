@@ -10,14 +10,14 @@ export default class RegisterPresenter {
     }
 
     async Register(name, email, password, confirmPassword) {
+        if (password !== confirmPassword) {
+            return this.#view.setMessage({name: "password", message:"confirm password tidak valid"});
+        }
+        if (password.slice("").length < 8) {
+            return this.#view.setMessage({ name: "password", message: "Character Password harus lebih dari 8"});
+        }
         this.#view.setLoading(true);
 
-        if (password !== confirmPassword) {
-            this.#view.setMessage("confirm password tidak valid");
-            this.#view.setLoading(false);
-
-            return;
-        }
         try {
             const data = {
                 name: name,
@@ -27,31 +27,15 @@ export default class RegisterPresenter {
             }
             const res = await this.#model.Register(data);
             if (res.status === "success") {
+                alert(res.msg);
                 this.#view.navigate("/login");
             }
         } catch (err) {
             console.log(err);
+            this.#view.setMessage(err.message);
         } finally {
             this.#view.setLoading(false);
         }
-    }
-    Next(name, email) {
-        if (name === '' || null) {
-            console.log("Mohon untuk tidak mengkosongkan name");
-            return;
-        }
-        if (email === '' || null) {
-            console.log("Mohon untuk tidak mengkosongkan email");
-            return;
-        }
-
-        this.#view.setLoading(true);
-        this.#view.setDisable(true);
-
-        setTimeout(() => {
-            this.#view.setActive(false);
-            this.#view.setLoading(false);
-        }, 500);
     }
 
     async searchEmail(value) {

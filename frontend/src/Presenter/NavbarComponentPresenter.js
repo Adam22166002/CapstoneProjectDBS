@@ -12,7 +12,6 @@ export default class NavbarComponentPresenter {
     async getKategori() {
         try {
             const res = await this.#model.getKategori();
-            console.log(res);
             this.#view.setCategories(res.data);
         } catch (err) {
             console.error(err);
@@ -22,10 +21,21 @@ export default class NavbarComponentPresenter {
     async getUser() {
         try {
             const res = await this.#model.getUser();
-            console.log(res);
             this.#view.setUser(res.user);
         } catch {
             this.#view.setUser(null);
+        }
+    }
+
+    async Logout() {
+        try {
+            if (confirm("Apakah anda yakin ingin Logout?")) {
+                const res = await this.#model.Logout();
+                alert(res.message);
+                this.#view.navigate("/login");
+            }
+        } catch (err) {
+            console.error(err);
         }
     }
 

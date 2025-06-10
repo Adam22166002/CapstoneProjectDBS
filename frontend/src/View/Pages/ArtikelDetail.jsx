@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { Dropdown, NavDropdown, Navbar, Container, Row, Col, Card, Button, Form, Badge, Nav, InputGroup } from 'react-bootstrap';
 import { FaSearch, FaPhoneAlt, FaComments, FaStethoscope, FaHeartbeat, FaCalendarAlt, FaUser, FaShare, FaBookmark, FaPrint, FaThumbsUp, FaThumbsDown, FaEye, FaClock, FaTag, FaArrowLeft, FaHome, FaChevronRight } from 'react-icons/fa';
-import { ArticlePresenter } from '../Presenter/DetailArtikelPresenter';
-import NavbarComponent from '../Component/NavbarComponent';
-import FooterComponent from '../Component/FooterComponent';
-import SubscriptionForm from '../Component/SubscriptionForm';
+import { ArticlePresenter } from '../../Presenter/DetailArtikelPresenter';
+import NavbarComponent from '../../Component/NavbarComponent';
+import FooterComponent from '../../Component/FooterComponent';
+import SubscriptionForm from '../../Component/SubscriptionForm';
 
 const ArticleDetailPage = () => {
 

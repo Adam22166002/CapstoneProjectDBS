@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Container, Row, Col, Card, Badge, Button, Spinner } from 'react-bootstrap';
 import { FaBookmark } from 'react-icons/fa';
-import { articlePresenter } from '../Presenter/ArtikelHomePresenter';
-import NavbarComponent from '../Component/NavbarComponent';
-import FooterComponent from '../Component/FooterComponent';
+import { articlePresenter } from '../../Presenter/ArtikelHomePresenter';
+import NavbarComponent from '../../Component/NavbarComponent';
+import FooterComponent from '../../Component/FooterComponent';
 
 const KategoriDetailPage = () => {
   const { id } = useParams(); // Ambil id kategori dari URL

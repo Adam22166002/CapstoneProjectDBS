@@ -1,14 +1,12 @@
-import axios from 'axios';
+import { instance } from '.';
 
 export class ContactModel {
-  constructor() {
-    this.baseURL = 'http://localhost:5000/api';
-  }
+
   async fetchKategori() {
     try {
       const [kategoriRes, artikelRes] = await Promise.all([
-        axios.get(`${this.baseURL}/kategori`),
-        axios.get(`${this.baseURL}/artikel`)
+        instance.get(`/api/kategori`),
+        instance.get(`/api/artikel`)
       ]);
 
       const kategoriData = kategoriRes.data.data;

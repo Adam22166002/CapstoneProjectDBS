@@ -1,10 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Table, Button, Form, InputGroup, Badge, Pagination, Image } from 'react-bootstrap';
 import { FaSearch, FaEdit, FaTrash, FaPlus, FaEye } from 'react-icons/fa';
+import KesehatanListPresenter from "../../Presenter/KesehatanListPresenter";
+import Kesehatan from "../../Model/kesehatanModel";
 
 const KesehatanList = () => {
     const [kesehatan, setKesehatan] = useState(null);
     const [renderKesehatan, setRenderKesehatan] = useState(null);
+
+    const presenter = new KesehatanListPresenter({
+        model: new Kesehatan(),
+        view: {
+            setKesehatan: setKesehatan,
+            setRenderKesehatan: setRenderKesehatan
+        }
+    })
+
+    async function handleDelete(id) {
+        await presenter.deleteKesehatan(id);
+    }
+
+    useEffect(() => {
+        presenter.getKesehatan();
+    }, []); 
 
 
     return (
@@ -50,14 +68,11 @@ const KesehatanList = () => {
                                     { renderKesehatan?.map((value, index) => (
                                         <tr key={value?.id}>
                                             <td>{index + 1}</td>
+                                            <td>{value?.user?.name}</td>
+                                            <td>{value?.hasil_prediksi}</td>
+                                            <td>{value?.saran}</td>
                                             <td>
-                                                <Image src={value?.images} rounded width={50} height={50} />
-                                            </td>
-                                            <td>{value?.judul}</td>
-                                            <td>{value?.category}</td>
-                                            <td>{value?.author}</td>
-                                            <td>
-                                                {new Date(value?.createdAt).toLocaleDateString('id-ID', {
+                                                {new Date(value?.currentTime).toLocaleDateString('id-ID', {
                                                     weekday: 'long',
                                                     year: 'numeric',
                                                     month: 'long',
@@ -65,20 +80,6 @@ const KesehatanList = () => {
                                                 })}
                                             </td>
                                             <td>
-                                                <Badge bg={
-                                                    value?.status === 'publish' ? 'success' :
-                                                        value?.status === 'draft' ? 'secondary' : 'warning'
-                                                }>
-                                                    {value?.status}
-                                                </Badge>
-                                            </td>
-                                            <td>
-                                                <Button variant="info" size="sm" className="me-1">
-                                                    <FaEye />
-                                                </Button>
-                                                <Button variant="warning" size="sm" className="me-1" onClick={() => handleEdit(value.id)}>
-                                                    <FaEdit />
-                                                </Button>
                                                 <Button variant="danger" size="sm" onClick={() => handleDelete(value?.id)}>
                                                     <FaTrash />
                                                 </Button>

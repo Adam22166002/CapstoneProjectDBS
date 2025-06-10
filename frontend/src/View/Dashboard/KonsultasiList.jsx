@@ -1,10 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Table, Button, Form, InputGroup, Badge, Pagination, Image } from 'react-bootstrap';
 import { FaSearch, FaEdit, FaTrash, FaPlus, FaEye } from 'react-icons/fa';
+import KonsultasiListPresenter from "../../Presenter/konsultasiListPresenter";
+import KonsultasiModel from "../../Model/konsultasiModel";
 
 const KonsultasiList = () => {
     const [konsultasi, setKonsultasi] = useState(null);
     const [renderkonsultasi, setRenderKonsultasi] = useState(null);
+
+    const presenter = new KonsultasiListPresenter({
+        model: new KonsultasiModel(),
+        view: {
+            setKonsultasi: setKonsultasi,
+            setRenderKonsultasi: setRenderKonsultasi
+        }
+    });
+
+    async function handleDelete(id) {
+        await presenter.deleteKonsultasi(id);
+    }
+
+    useEffect(() => {
+        presenter.getKonsultasi();
+    }, []);
 
 
     return (
@@ -38,7 +56,7 @@ const KonsultasiList = () => {
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th>No</th>
                                         <th>Nama User</th>
                                         <th>Prediksi Penyakit</th>
                                         <th>Saran</th>
@@ -50,14 +68,11 @@ const KonsultasiList = () => {
                                     { renderkonsultasi?.map((value, index) => (
                                         <tr key={value?.id}>
                                             <td>{index + 1}</td>
+                                            <td>{value?.user?.name}</td>
+                                            <td>{value?.hasil_prediksi}</td>
+                                            <td>{value?.saran}</td>
                                             <td>
-                                                <Image src={value?.images} rounded width={50} height={50} />
-                                            </td>
-                                            <td>{value?.judul}</td>
-                                            <td>{value?.category}</td>
-                                            <td>{value?.author}</td>
-                                            <td>
-                                                {new Date(value?.createdAt).toLocaleDateString('id-ID', {
+                                                {new Date(value?.currentTime).toLocaleDateString('id-ID', {
                                                     weekday: 'long',
                                                     year: 'numeric',
                                                     month: 'long',
@@ -65,20 +80,6 @@ const KonsultasiList = () => {
                                                 })}
                                             </td>
                                             <td>
-                                                <Badge bg={
-                                                    value?.status === 'publish' ? 'success' :
-                                                        value?.status === 'draft' ? 'secondary' : 'warning'
-                                                }>
-                                                    {value?.status}
-                                                </Badge>
-                                            </td>
-                                            <td>
-                                                <Button variant="info" size="sm" className="me-1">
-                                                    <FaEye />
-                                                </Button>
-                                                <Button variant="warning" size="sm" className="me-1" onClick={() => handleEdit(value.id)}>
-                                                    <FaEdit />
-                                                </Button>
                                                 <Button variant="danger" size="sm" onClick={() => handleDelete(value?.id)}>
                                                     <FaTrash />
                                                 </Button>

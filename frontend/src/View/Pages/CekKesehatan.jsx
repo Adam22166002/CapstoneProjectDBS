@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaHeartbeat, FaClipboardCheck, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa';
 import { useParams, useNavigate } from 'react-router-dom';
-import NavbarComponent from '../Component/NavbarComponent';
-import FooterComponent from '../Component/FooterComponent';
+import NavbarComponent from '../../Component/NavbarComponent';
+import FooterComponent from '../../Component/FooterComponent';
 import {
   Container,
   Row,
@@ -17,8 +17,8 @@ import {
   CardGroup,
   ListGroup
 } from 'react-bootstrap';
-import KesehatanPresenter from '../Presenter/cekKesehatanPresenter';
-import Kesehatan from '../Model/kesehatanModel';
+import KesehatanPresenter from '../../Presenter/cekKesehatanPresenter';
+import Kesehatan from '../../Model/kesehatanModel';
 
 const CekKesehatan = () => {
   const { id } = useParams();

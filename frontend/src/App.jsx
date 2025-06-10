@@ -2,15 +2,16 @@ import { Routes, Route } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./View/Auth/Login";
 import Register from "./View/Auth/Signin";
+import ResetPassword from "./View/Auth/ResetPassword";
 import ForgotPassword from "./View/Auth/ForgotPassword";
-import Home from "./Pages/Home";
-import Artikel from "./Pages/Artikel";
-import KategoriPage from './Pages/KategoriPage';
-import ArtikelDetail from "./Pages/ArtikelDetail";
-import Kontak from "./Pages/Kontak";
-import Kategori from "./Pages/Kategori";
-import CekKesehatan from "./Pages/CekKesehatan";
-import Konsultasi from "./Pages/Konsultasi";
+import Home from "./View/Pages/Home";
+import Artikel from "./View/Pages/Artikel";
+import KategoriPage from './View/Pages/KategoriPage';
+import ArtikelDetail from "./View/Pages/ArtikelDetail";
+import Kontak from "./View/Pages/Kontak";
+import Kategori from "./View/Pages/Kategori";
+import CekKesehatan from "./View/Pages/CekKesehatan";
+import Konsultasi from "./View/Pages/Konsultasi";
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "./View/Dashboard/Dashboard";
 import MainLayout from "./View/Dashboard/layouts/MainLayout";
@@ -43,7 +44,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
       {/* Home */}
       {/* <Route
         path="/home"

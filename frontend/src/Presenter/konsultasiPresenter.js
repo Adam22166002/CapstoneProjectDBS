@@ -9,7 +9,7 @@ export default class KonsultasiPresenter {
         this.#view = view;
     }
 
-    async submitKonsultasi(url_image, image, user) {
+    async submitKonsultasi(url_image, image, userId) {
         if (!image) return;
 
         this.#view.setIsLoading(true);
@@ -29,11 +29,10 @@ export default class KonsultasiPresenter {
             // Prepare FormData for API
             const formData = new FormData();
             formData.append('file', image);
-            formData.append('user', user);
+            formData.append('userId', userId);
 
             // TODO: Replace with your actual API endpoint
             const res = await this.#model.createPredict(formData);
-            console.log(res);
 
 
             // Add AI response to chat
@@ -65,6 +64,18 @@ export default class KonsultasiPresenter {
         } finally {
             this.#view.setIsLoading(false);
             this.#view.setIsUploading(false);
+        }
+    }
+    async getUser() {
+        this.#view.setIsLoading(true);
+        try {
+            const res = await this.#model.getUser();
+            this.#view.setShowConsultationModal(true);
+            this.#view.setUser(res.user);
+        } catch {
+            this.#view.navigate("/login");
+        } finally {
+            this.#view.setIsLoading(false);
         }
     }
 }

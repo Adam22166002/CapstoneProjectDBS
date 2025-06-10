@@ -1,13 +1,10 @@
-import axios from 'axios';
+import { instance } from ".";
 
 class ArticleModel {
-  constructor() {
-    this.baseURL = 'http://localhost:5000/api';
-  }
 
   async fetchArticles() {
     try {
-      const response = await axios.get(`${this.baseURL}/artikel`);
+      const response = await instance.get(`/api/artikel`);
       const data = response.data;
 
       if (Array.isArray(data)) {
@@ -28,7 +25,7 @@ class ArticleModel {
 
   async fetchCategories() {
     try {
-      const response = await axios.get(`${this.baseURL}/kategori`);
+      const response = await instance.get(`/api/kategori`);
       const data = response.data;
 
       if (Array.isArray(data)) {
