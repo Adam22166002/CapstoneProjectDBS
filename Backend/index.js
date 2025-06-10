@@ -20,6 +20,7 @@ import likesRoute from './routes/likes-route.js';
 import { reactions } from './models/reactions-artikel.js';
 import Konsultasi from './models/konsultasi-model.js';
 import routeQuestion from './routes/question-route.js';
+import HasilCekKesehatan from './models/hasilCekKesehatan-model.js';
 
 const init = async () => {
 
@@ -60,10 +61,7 @@ const init = async () => {
     try {
         await db.authenticate();
         console.log('Database Connected...');
-        await db.sync({ alter: true });
-        // await Kesehatan.sync()
-        // await Artikel.sync({ alter: true });
-        // await Konsultasi.sync()
+        await db.sync();
     } catch (error) {
         
     }

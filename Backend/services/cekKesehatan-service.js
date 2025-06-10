@@ -1,6 +1,9 @@
 import { Op } from 'sequelize';
 import CekKesehatan from '../models/cekKesehatan-model.js';
 import KategoriKesehatan from '../models/kategori-kesehatan.js';
+import Kesehatan from '../models/kesehatan-model.js';
+import HasilCekKesehatan from '../models/hasilCekKesehatan-model.js';
+import HasilKonsultasiKesehatan from '../models/hasilKonsultasiKesehatan-model.js';
 
 
 export const startSession = async (id) => {
@@ -96,3 +99,36 @@ export const getCekKesehatanDetail = async (id) => {
         ]
     });
 };
+
+
+export const getAllKesehatanService = async () => {
+    const kesehatan = HasilCekKesehatan.findAll();
+    return kesehatan;
+}
+
+export const deleteKesehatanService = async (id) => {
+    const kesehatan = HasilCekKesehatan.destroy({
+        where: {
+            id: id
+        }
+    });
+
+    return kesehatan;
+}
+
+export const getAllKonsultasiService = async () => {
+    const konsultasi = await HasilKonsultasiKesehatan.findAll();
+    return konsultasi;
+}
+
+export const deleteKonsultasiService = async (id) => {
+    const konsultasi = HasilKonsultasiKesehatan.destroy({
+        where: {
+            id: id
+        }
+    });
+
+    return konsultasi;
+}
+
+

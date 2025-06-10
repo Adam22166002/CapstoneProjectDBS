@@ -1,4 +1,4 @@
-import { handleGetCategories, handleStartSession, handleSubmitAnswer, handleGetDetail, createKesehatan, predictKulit, predictKesehatan } from "../controllers/cekKesehatan-controller.js";
+import { handleGetCategories, handleStartSession, handleSubmitAnswer, handleGetDetail, createKesehatan, predictKulit, predictKesehatan, getAllkesehatan, deleteKesehatanById, getAllKonsultasi, deleteKonsultasiById } from "../controllers/cekKesehatan-controller.js";
 
 const routesCekKesehatan = [
     {
@@ -56,7 +56,26 @@ const routesCekKesehatan = [
             path: '/predict-kesehatan',
             handler: predictKesehatan,
         },
-
+        {
+            method: 'GET',
+            path: '/kesehatan',
+            handler: getAllkesehatan
+        },
+        {
+            method: 'DELETE',
+            path: '/kesehatan/{id}',
+            handler: deleteKesehatanById
+        },
+        {
+            method: 'GET',
+            path: '/konsultasi',
+            handler: getAllKonsultasi
+        },
+        {
+            method: 'DELETE',
+            path: '/konsultasi/{id}',
+            handler: deleteKonsultasiById
+        },
 ];
 
 export default routesCekKesehatan;

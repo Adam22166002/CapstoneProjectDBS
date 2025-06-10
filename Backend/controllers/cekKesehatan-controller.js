@@ -1,4 +1,4 @@
-import { startSession, submitAnswer, getAllCategories, getCekKesehatanDetail } from "../services/cekKesehatan-service.js";
+import { startSession, submitAnswer, getAllCategories, getCekKesehatanDetail, getAllKesehatanService, deleteKesehatanService, getAllKonsultasiService, deleteKonsultasiService } from "../services/cekKesehatan-service.js";
 import Kesehatan from "../models/kesehatan-model.js";
 import axios from 'axios';
 import FormData from 'form-data';
@@ -94,6 +94,67 @@ export const createKesehatan = async (request, h) => {
   }
 };
 
+export const getAllkesehatan = async (request, h) => {
+  try {
+    const kesehatan = await getAllKesehatanService();
+    return h.response({
+      status: "success",
+      data: kesehatan
+    }).code(200);
+  } catch (err) {
+    return h.response({
+      status: "fail",
+      error: err
+    }).code(500);
+  }
+}
+
+export const deleteKesehatanById = async (request, h) => {
+  const { id } = request.params;
+  try {
+    const kesehatan = await deleteKesehatanService(id);
+    return h.response({
+      status: "success",
+      message: "Berhasil menghapus kesehatan"
+    }).code(200);
+  } catch (err) {
+    return h.response({
+      status: "fail",
+      error: err
+    }).code(500);
+  }
+}
+
+export const getAllKonsultasi = async (request, h) => {
+  try {
+    const konsultasi = await getAllKonsultasiService();
+    return h.response({
+      status: "success",
+      data: konsultasi
+    }).code(200);
+  } catch (err) {
+    return h.response({
+      status: "fail",
+      error: err
+    }).code(500);
+  }
+}
+
+export const deleteKonsultasiById = async (request, h) => {
+  const { id } = request.params;
+  try {
+    const kesehatan = await deleteKonsultasiService(id);
+    return h.response({
+      status: "success",
+      message: "Berhasil menghapus kesehatan"
+    }).code(200);
+  } catch (err) {
+    return h.response({
+      status: "fail",
+      error: err
+    }).code(500);
+  }
+}
 
 
 // export const handleHealthCheck = async (request, h) => {

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { addUserService, indexUsersSerice, updateUserService, deleteUserService, searchEmailService } from "../services/User-service.js";
+import { addUserService, indexUsersSerice, updateUserService, deleteUserService, searchEmailService, getUserService } from "../services/User-service.js";
 import Joi from "joi";
 
 export const indexUser = async (request, h) => {
@@ -131,6 +131,22 @@ export const getUserController = async (request, h) => {
         return h.response({
             user: userVerify
         });
+    } catch (err) {
+        return h.response({
+            status: "fail",
+            error: err
+        }).code(404);
+    }
+}
+
+export const getUserFromId = async (request, h) => {
+    const { id } = request.params;
+    try {
+        const user = await getUserService(id);
+        return h.response({
+            status: "success",
+            data: user
+        }).code(200);
     } catch (err) {
         return h.response({
             status: "fail",

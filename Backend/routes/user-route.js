@@ -1,4 +1,4 @@
-import { addUser, deleteUser, getUserController, indexUser, searchEmailHandler, updateUser } from "../controllers/user-controller.js"
+import { addUser, deleteUser, getUserController, getUserFromId, indexUser, searchEmailHandler, updateUser } from "../controllers/user-controller.js"
 
 
 const routeUser = [
@@ -29,21 +29,17 @@ const routeUser = [
     {
         method: 'POST',
         path: '/api/search-email',
-        handler: searchEmailHandler,
-        options: {
-            payload: {
-                parse: true,
-                allow: ['multipart/form-data', 'application/json'], 
-                multipart: true,  
-                maxBytes: 10 * 1024 * 1024, 
-                output: 'stream' 
-            }
-        }
+        handler: searchEmailHandler
     },
     {
         method: "GET",
         path: "/api/user",
         handler: getUserController
+    },
+    {
+        method: "GET",
+        path: "/api/user/{id}",
+        handler: getUserFromId
     }
 ]
 
