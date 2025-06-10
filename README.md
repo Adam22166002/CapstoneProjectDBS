@@ -23,3 +23,13 @@ cp .env.example .env
 ````
 node index.js
 ````
+
+6. Masuk ke direktori frontend
+````
+cd frontend
+````
+
+7. Jalankan frontend
+````
+npm run dev
+````
