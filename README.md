@@ -51,6 +51,7 @@ npm run dev
 ````
 
 # Struktur Folder
+```
 CapstoneProjectDBS/
 ├── frontend/
 │   ├── public/
@@ -61,37 +62,39 @@ CapstoneProjectDBS/
 │   │   ├── pages/             # Halaman utama (Home, Dashboard, Settings, etc.)
 │   │   ├── model/             # Menyimpan struktur data dan logika bisnis (misalnya data user, item, dsb)
 │   │   ├── Presenter/         # Menangani logika presentasi dan penghubung antara View dan Model (misalnya API calls, state management)
-│   │   ├── View/              # Menyimpan komponen UI atau halaman yang akan ditampilkan kepada pengguna (Home, Dashboard, dll)
+│   │   ├── View/              # Menyimpan komponen UI atau halaman yang akan ditampilkan kepada pengguna
 │   │   ├── App.jsx            # Komponen utama aplikasi React yang memuat routing dan layout utama
 │   │   ├── index.css          # File CSS global untuk styling aplikasi
 │   │   ├── Main.jsx           # Wrapper utama atau layout dasar aplikasi
-│   │   ├── PrivateRoute.jsx   # Komponen untuk membatasi akses ke halaman tertentu berdasarkan autentikasi
-│   │   ├── SetupRoleAdmin.jsx # Komponen/logic untuk inisialisasi role Admin
-│   │   ├── SetupRoleUser.jsx  # Komponen/logic untuk inisialisasi role User
-│   │   └── main.js            # Entry point aplikasi React, merender `App` ke DOM
-│   └── .env                   # Konfigurasi env
-|
+│   │   ├── PrivateRoute.jsx   # Komponen untuk membatasi akses berdasarkan autentikasi
+│   │   ├── SetupRoleAdmin.jsx # Inisialisasi dan logika peran Admin
+│   │   ├── SetupRoleUser.jsx  # Inisialisasi dan logika peran User
+│   │   └── main.js            # Entry point aplikasi React
+│   └── .env                   # Konfigurasi environment frontend
+│
 ├── backend/
-│   ├── config/           # Konfigurasi aplikasi seperti koneksi database, variabel env, dll
-│   ├── controllers/      # Logika untuk menangani request dan response (misalnya userController.js)
-│   ├── middleware/       # Middleware seperti autentikasi (JWT), validasi, error handling, dll
-│   ├── models/           # Skema atau model database (misalnya dengan Mongoose atau ORM lain)
-│   ├── public/           # File publik seperti gambar, dokumen, atau file statis lainnya
-│   ├── routes/           # Definisi endpoint API dan pemetaan ke controller (misalnya userRoutes.js)
-│   ├── services/         # Logika bisnis, layanan eksternal, atau utilitas pendukung controller
-│   ├── .env              # File environment untuk menyimpan variabel sensitif (PORT, DB_URI, dll)
-│   ├── index.js          # Entry point utama untuk menjalankan server Express
-│   ├── package.json      # Daftar dependensi dan script npm
-│   ├── package-lock.json # File pengunci versi dependensi
-│   └── request.rest       # File untuk menguji endpoint API (digunakan dengan ekstensi REST Client di VSCode)
-|
+│   ├── config/           # Konfigurasi aplikasi (DB, auth, third-party)
+│   ├── controllers/      # Handler HTTP request dan response
+│   ├── middleware/       # Middleware: autentikasi (JWT), validasi, error handler
+│   ├── models/           # Skema/model database
+│   ├── public/           # File statis (gambar, dokumen, dsb)
+│   ├── routes/           # Definisi endpoint API
+│   ├── services/         # Logika bisnis, utilitas, dan layanan eksternal
+│   ├── .env              # Variabel environment (PORT, DB_URI, dll)
+│   ├── index.js          # Entry point backend (Express app)
+│   ├── package.json      # Daftar dependensi backend
+│   ├── package-lock.json # Pengunci versi dependensi backend
+│   └── request.rest       # File uji endpoint API (via REST Client VSCode)
+│
 ├── machine_learning/
-│   ├── app.py               # Script utama untuk menjalankan model ML (misalnya prediksi via API/CLI)
-│   ├── dataset.csv          # Dataset yang digunakan untuk pelatihan model
-│   ├── latih_dataset.ipynb  # Notebook Jupyter untuk eksplorasi data dan pelatihan model
-│   ├── model.h5             # Model hasil training pertama dalam format HDF5
-│   ├── model2.h5            # Model hasil training alternatif atau versi lainnya
-│   ├── required.md          # Dokumentasi tambahan atau catatan teknis terkait ML
-│   ├── requirements.txt     # Daftar dependensi Python yang diperlukan (pandas, keras, sklearn, dll)
-├── bash.exe.stackdump
-└── README.md             # (ini file README utama)
+│   ├── app.py               # Script untuk menjalankan model ML
+│   ├── dataset.csv          # Dataset pelatihan model
+│   ├── latih_dataset.ipynb  # Jupyter Notebook: pelatihan & eksplorasi data
+│   ├── model.h5             # Model hasil pelatihan (.h5 format)
+│   ├── model2.h5            # Alternatif model hasil pelatihan
+│   ├── required.md          # Catatan dokumentasi terkait machine learning
+│   ├── requirements.txt     # Daftar dependensi Python
+│
+├── bash.exe.stackdump       # (Opsional) File dump error Windows (bisa dihapus jika tidak diperlukan)
+└── README.md                # Dokumentasi utama proyek
+```
